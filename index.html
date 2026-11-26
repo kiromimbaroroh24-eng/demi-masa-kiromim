@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demi Masa · Nilai Al-‘Ashr untuk Kendali Doomscrolling</title>
+  <meta name="description" content="Media pembelajaran PAI interaktif: penguatan pemahaman nilai Al-‘Ashr dalam pengendalian doomscrolling untuk siswa SMAN 1 Kepohbaru.">
+  <meta name="theme-color" content="#fff8f4">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23ec5f86'/%3E%3Cpath d='M20 12h24M20 52h24M22 12c0 12 20 14 20 20s-20 8-20 20M42 12c0 12-20 14-20 20s20 8 20 20' stroke='%23ffffff' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,600&family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="skip" href="#app">Lewati ke isi</a>
+  <header class="topbar">
+    <a class="brand" href="#beranda">
+      <span class="logo"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 12h24M20 52h24M22 12c0 12 20 14 20 20s-20 8-20 20M42 12c0 12-20 14-20 20s20 8 20 20"/></svg></span>
+      <span>Demi Masa</span>
+    </a>
+    <div class="top-right">
+      <div class="prog-chip" id="progChip" title="Bagian yang sudah selesai">0/5</div>
+      <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="drawer">Menu</button>
+    </div>
+  </header>
+  <nav class="drawer" id="drawer" hidden>
+    <a href="#beranda">🏠 Beranda</a>
+    <a href="#petunjuk">🧭 Petunjuk</a>
+    <a href="#materi">📚 Daftar Materi</a>
+    <div id="drawerParts"></div>
+    <a href="#rangkuman">🗺️ Rangkuman</a>
+    <a href="#kuis-akhir">🏁 Kuis Akhir</a>
+    <div class="sep"></div>
+    <a href="#progres">📈 Progres Belajar</a>
+    <a href="#glosarium">🔤 Glosarium</a>
+    <a href="#unduhan">⬇️ Unduhan</a>
+    <a href="#tanya">💬 Tanya Jawab</a>
+    <div class="sep"></div>
+    <a href="#pengembang">👤 Profil Pengembang</a>
+    <a href="#guru" class="muted-link">👩‍🏫 Halaman Guru</a>
+  </nav>
+  <main id="app" tabindex="-1"></main>
+  <footer class="foot">
+    <p>Media pembelajaran PAI · Penguatan Pemahaman Nilai Al-‘Ashr dalam Pengendalian <em>Doomscrolling</em> · <span id="footSchool"></span></p>
+    <p>Dikembangkan oleh <a href="#pengembang">Kiromim Baroroh</a> · STIT Muhammadiyah Bojonegoro · 2026</p>
+    <p class="small">Jawaban refleksi dan kuis hanya tersimpan di perangkatmu sendiri. Website ini tidak mengumpulkan data pribadi.</p>
+  </footer>
+  <script src="js/config.js"></script>
+  <script src="js/content.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
