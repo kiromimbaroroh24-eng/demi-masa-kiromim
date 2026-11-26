@@ -280,9 +280,7 @@ window.CONTENT = {
   ],
   terbaru: [
     { tgl: "2026-11-26", judul: "Glosarium istilah penting", link: "#glosarium", ket: "18 istilah dari Al-‘Ashr sampai doomscrolling" },
-    { tgl: "2026-11-26", judul: "Unduhan PDF: ringkasan materi dan lembar kerja", link: "#unduhan", ket: "Bisa dicetak untuk belajar di rumah" },
-    { tgl: "2026-11-26", judul: "Bagian 5: Saling Menguatkan", link: "#bagian-5", ket: "Aktivitas baru: balas pesan Rani" }
-  ],
+    { tgl: "2026-11-26", judul: "Unduhan PDF: ringkasan materi dan lembar kerja", link: "#unduhan", ket: "Bisa dicetak untuk belajar di rumah" },  ],
 
   ringkasan: {
     1: ["Allah bersumpah demi waktu karena waktu menentukan untung-rugi hidup manusia.", "Waktu itu netral. Pilihan amal kitalah yang membuatnya bernilai atau terbuang.", "Khusr berarti kehilangan modal berupa umur dan waktu.", "Banyak orang tertipu (maghbūn) dalam nikmat waktu luang tanpa menyadarinya."],
