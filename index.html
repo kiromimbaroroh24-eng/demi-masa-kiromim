@@ -10,7 +10,503 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,600&family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <style>
+/*
+  VOICE: hangat, ceria, ramah remaja, tetap santun
+  IDEA: langit sore (al-‘ashr): biru muda -> lilac -> peach, matahari yang turun
+  PICTURE: hero langit senja + matahari, tiap pilar punya warna sendiri
+  COLOUR/TYPE: krem lembut, navy-ungu tua untuk teks, coral-pink, periwinkle, peach, mint, sky; Fraunces + Plus Jakarta Sans + Amiri
+  LAYOUT: satu kolom ramah ponsel, kartu membulat dengan bayangan lembut
+*/
+:root{
+  --bg:#fff8f4; --paper:#ffffff; --ink:#2a2342; --muted:#77708c; --line:#f1e4ea;
+  --rose:#ec5f86; --rose-d:#c9436b; --peri:#7b6cf6; --peach:#ff9f6e; --sun:#ffc15e; --mint:#2fb7a0; --sky:#4ba8f0;
+  --ok:#22a58c; --ok-bg:#e3f7f2; --no:#e0566b; --no-bg:#fdeaee;
+  --r:22px; --shadow:0 14px 34px -18px rgba(90,60,140,.35); --shadow-s:0 6px 18px -12px rgba(90,60,140,.35);
+  --sans:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --serif:"Fraunces",Georgia,serif; --arab:"Amiri","Traditional Arabic","Scheherazade New",serif;
+  --tone:#ec5f86; --tone-2:#ffd6e2; --tone-3:#fff1f5;
+}
+[data-tone="1"]{--tone:#f07f4f;--tone-2:#ffd9c4;--tone-3:#fff3ec}
+[data-tone="2"]{--tone:#7b6cf6;--tone-2:#ddd8ff;--tone-3:#f4f2ff}
+[data-tone="3"]{--tone:#26a98f;--tone-2:#c9f0e5;--tone-3:#effbf7}
+[data-tone="4"]{--tone:#3a97e0;--tone-2:#cfe7fb;--tone-3:#eff7fe}
+[data-tone="5"]{--tone:#e0527c;--tone-2:#ffd3e0;--tone-3:#fff1f5}
+*{box-sizing:border-box;min-width:0}
+html{scroll-behavior:smooth;scroll-padding-top:110px}
+body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.65;font-size:16.5px;-webkit-font-smoothing:antialiased;overflow-x:clip}
+img,svg{max-width:100%}
+a{color:var(--rose-d)}
+.skip{position:absolute;left:-999px}.skip:focus{left:8px;top:8px;z-index:99;background:#fff;padding:8px 12px;border-radius:8px}
+:focus-visible{outline:3px solid var(--peri);outline-offset:2px}
+
+/* ---------- top bar ---------- */
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:10px 18px;background:rgba(255,248,244,.86);backdrop-filter:blur(12px);border-bottom:1px solid rgba(236,95,134,.12)}
+.brand{display:flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;font-family:var(--serif);font-weight:800;font-size:1.2rem}
+.brand .logo{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(140deg,var(--peach),var(--rose) 55%,var(--peri));box-shadow:var(--shadow-s)}
+.brand svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:5;stroke-linecap:round}
+.top-right{display:flex;gap:8px;align-items:center}
+.prog-chip{font-size:.8rem;font-weight:800;padding:6px 11px;border-radius:99px;background:#fff;color:var(--rose-d);border:1.5px solid #ffd3e0}
+.menu-btn{font:inherit;font-weight:800;font-size:.9rem;background:var(--ink);color:#fff;border:0;border-radius:99px;padding:8px 16px;cursor:pointer;min-height:40px}
+.drawer{position:fixed;z-index:19;top:62px;right:12px;left:12px;max-width:360px;margin-left:auto;background:#fff;border-radius:var(--r);box-shadow:var(--shadow);padding:10px;display:flex;flex-direction:column;border:1px solid var(--line)}
+.drawer[hidden]{display:none}
+.drawer a{padding:11px 14px;border-radius:14px;text-decoration:none;color:var(--ink);font-weight:700}
+.drawer a:hover,.drawer a.on{background:var(--tone-3)}
+.drawer .sep{border-top:1px solid var(--line);margin:6px 4px}
+.drawer .muted-link{color:var(--muted);font-weight:600}
+
+main{outline:none;min-height:70vh}
+.wrap{max-width:800px;margin:0 auto;padding:0 18px}
+
+/* ---------- hero (langit sore) ---------- */
+.hero{position:relative;overflow:hidden;background:linear-gradient(180deg,#bfe2ff 0%,#d9d3ff 34%,#ffd5e2 64%,#ffc8a8 88%,#ffb88a 100%);padding:44px 0 0}
+.hero .cloud{position:absolute;background:#fff;border-radius:99px;opacity:.7;filter:blur(.3px)}
+.hero .c1{width:150px;height:34px;top:70px;left:-30px}.hero .c1::after,.hero .c2::after{content:"";position:absolute;background:#fff;border-radius:50%}
+.hero .c1::after{width:70px;height:56px;left:34px;top:-26px}
+.hero .c2{width:120px;height:28px;top:150px;right:-20px}.hero .c2::after{width:56px;height:46px;left:30px;top:-22px}
+.hero .wrap{position:relative;text-align:center}
+.hero .ar-big{font-family:var(--arab);font-size:clamp(3.2rem,12vw,5.4rem);line-height:1.25;margin:0;background:linear-gradient(90deg,var(--peri),var(--rose) 55%,var(--peach));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero h1{font-family:var(--serif);font-weight:800;font-size:clamp(1.95rem,6vw,3.1rem);line-height:1.1;margin:6px 0 12px;color:var(--ink);text-wrap:balance}
+.hero h1 em{font-style:italic;color:var(--rose-d)}
+.hero p.lead{max-width:560px;margin:0 auto 22px;color:#4a4163;font-size:1.05rem}
+.horizon{position:relative;height:clamp(110px,16vw,170px);margin-top:24px;overflow:hidden}
+.horizon .sun{position:absolute;left:50%;bottom:-40%;width:clamp(130px,18vw,200px);transform:translateX(-50%)}
+.horizon .sun .disc{animation:sink 7s ease-in-out infinite alternate}
+.horizon .hill{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:46%}
+@keyframes sink{from{transform:translateY(-6px)}to{transform:translateY(8px)}}
+@media (prefers-reduced-motion:reduce){.horizon .sun .disc{animation:none}html{scroll-behavior:auto}}
+
+.btn{display:inline-flex;align-items:center;gap:8px;font:inherit;font-weight:800;border:0;border-radius:99px;padding:13px 24px;cursor:pointer;text-decoration:none;transition:transform .15s ease,box-shadow .15s ease;min-height:46px}
+.btn:hover{transform:translateY(-2px)}
+.btn-main{background:linear-gradient(120deg,var(--rose),var(--peach));color:#fff;box-shadow:0 12px 24px -12px rgba(236,95,134,.9)}
+.btn-dark{background:var(--ink);color:#fff}
+.btn-ghost{background:#fff;color:var(--ink);border:2px solid var(--ink)}
+.btn-soft{background:rgba(255,255,255,.75);color:var(--ink);border:1.5px solid rgba(255,255,255,.9)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+
+/* ---------- sections ---------- */
+.sec{padding:40px 0}
+.sec h2{font-family:var(--serif);font-weight:800;font-size:clamp(1.55rem,4.6vw,2.05rem);line-height:1.15;margin:0 0 8px;text-wrap:balance}
+.kicker{font-size:.85rem;font-weight:800;color:var(--rose-d);margin:0 0 4px}
+.muted{color:var(--muted)}
+.small{font-size:.86rem}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:22px;box-shadow:var(--shadow-s)}
+.card + .card{margin-top:14px}
+
+.surah{background:linear-gradient(165deg,#ffffff 0%,var(--tone-3) 100%);border:1.5px solid var(--tone-2);text-align:center;padding:28px 22px}
+.ar{font-family:var(--arab);direction:rtl;font-size:clamp(1.6rem,5.4vw,2.15rem);line-height:2.1;color:var(--ink)}
+.latin{font-style:italic;color:var(--tone);margin:10px 0 6px}
+.arti{font-size:1.02rem}
+.src{display:inline-block;margin-top:10px;font-size:.8rem;font-weight:800;color:var(--tone);background:var(--tone-3);padding:4px 12px;border-radius:99px}
+
+/* jalur 5 bagian */
+.journey{display:grid;gap:14px;margin-top:18px}
+.pcard{position:relative;display:grid;grid-template-columns:62px minmax(0,1fr);gap:14px;align-items:center;background:#fff;border:1.5px solid var(--tone-2);border-radius:var(--r);padding:16px;text-decoration:none;color:inherit;box-shadow:var(--shadow-s);transition:transform .15s ease,box-shadow .15s ease;overflow:hidden}
+.pcard::before{content:"";position:absolute;right:-30px;top:-30px;width:110px;height:110px;border-radius:50%;background:var(--tone-3)}
+.pcard:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.pcard > *{position:relative}
+.pcard .ic{width:62px;height:62px;border-radius:18px;display:grid;place-items:center;font-size:1.7rem;background:var(--tone-2)}
+.pcard h3{margin:0;font-size:1.05rem;font-weight:800}
+.pcard p{margin:2px 0 0;font-size:.9rem;color:var(--muted);line-height:1.45}
+.pcard .num{font-size:.78rem;font-weight:800;color:var(--tone)}
+.pcard .badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.badge{font-size:.74rem;font-weight:800;padding:4px 10px;border-radius:99px;background:var(--tone-3);color:var(--tone);white-space:nowrap}
+.badge.done{background:var(--ok-bg);color:var(--ok)}
+
+/* header bagian */
+.phead{position:relative;overflow:hidden;background:linear-gradient(160deg,var(--tone-3) 0%,var(--tone-2) 100%);padding:30px 0 28px}
+.phead::after{content:"";position:absolute;right:-60px;bottom:-80px;width:240px;height:240px;border-radius:50%;background:rgba(255,255,255,.45)}
+.phead .wrap{position:relative;z-index:1}
+.phead .crumb{font-size:.85rem;color:var(--muted);margin:0 0 12px}
+.phead .crumb a{color:var(--tone);font-weight:700}
+.phead .pnum{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:.85rem;color:#fff;background:var(--tone);padding:5px 12px;border-radius:99px}
+.phead h1{font-family:var(--serif);font-weight:800;font-size:clamp(1.95rem,6vw,2.7rem);line-height:1.1;margin:12px 0 6px;text-wrap:balance}
+.phead .sub{color:#554c6c;margin:0}
+.phead .ar-pillar{font-family:var(--arab);font-size:2rem;color:var(--tone);direction:rtl;margin:2px 0 0;text-align:right}
+
+.stepnav{position:sticky;top:59px;z-index:10;background:rgba(255,248,244,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.stepnav .wrap{display:flex;gap:6px;overflow-x:auto;padding:10px 18px;scrollbar-width:none}
+.stepnav .wrap::-webkit-scrollbar{display:none}
+.stepnav a{flex:none;font-size:.82rem;font-weight:700;text-decoration:none;color:var(--muted);padding:7px 13px;border-radius:99px;background:#fff;border:1.5px solid var(--line)}
+.stepnav a:hover{color:var(--tone);border-color:var(--tone)}
+
+.block{padding:26px 0 6px}
+.block > h2{font-family:var(--serif);font-size:1.4rem;margin:0 0 12px;display:flex;align-items:center;gap:10px}
+.block > h2 .dot{width:34px;height:34px;border-radius:12px;display:grid;place-items:center;font-size:1rem;background:var(--tone-2)}
+.goal{background:var(--tone-3);border:1.5px dashed var(--tone-2)}
+.ask{background:var(--tone) radial-gradient(circle at 92% 8%,rgba(255,255,255,.28),transparent 45%);color:#fff;border:0}
+.ask .lbl{font-weight:800;font-size:.82rem;opacity:.9}
+.ask p{font-size:1.12rem;margin:6px 0 0;font-family:var(--serif)}
+.dalil .tag{display:inline-block;font-size:.76rem;font-weight:800;padding:4px 12px;border-radius:99px;background:#fff;color:var(--tone);border:1.5px solid var(--tone-2);margin-bottom:6px}
+.mat h3{margin:0 0 6px;font-size:1.06rem}
+.mat p{margin:0}
+.mat ul{margin:6px 0 0;padding-left:20px}
+.mat li{margin:4px 0}
+.mat li::marker{color:var(--tone)}
+
+.tafsir{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.tafsir .card{margin:0;border-top:4px solid var(--tone-2)}
+.tafsir b{display:block}
+.tafsir i{font-size:.84rem;color:var(--muted)}
+.tafsir p{margin:8px 0 0;font-size:.94rem}
+
+.video{position:relative;aspect-ratio:16/9;border-radius:var(--r);overflow:hidden;background:#000}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-ph{aspect-ratio:16/9;border-radius:var(--r);display:grid;place-items:center;text-align:center;padding:20px;color:var(--muted);background:linear-gradient(135deg,var(--tone-3),#fff);border:2px dashed var(--tone-2)}
+.video-ph b{display:block;color:var(--ink);font-size:1.05rem}
+.video-ph .play{width:58px;height:58px;border-radius:50%;margin:0 auto 10px;display:grid;place-items:center;background:var(--tone);color:#fff;font-size:1.3rem}
+
+.story{background:#fff;border:1.5px solid var(--tone-2);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-s)}
+.story .st-h{background:var(--tone);color:#fff;font-weight:800;padding:12px 20px}
+.story .st-b{padding:18px 20px}
+.story .st-b p{margin:0 0 10px}
+.story .st-q{background:var(--tone-3);border-radius:14px;padding:12px 14px;font-weight:700}
+
+textarea{width:100%;min-height:110px;font:inherit;font-size:16px;padding:14px;border-radius:16px;border:1.5px solid var(--line);background:#fff;resize:vertical}
+textarea:focus{border-color:var(--tone);outline:none}
+.saved{font-size:.82rem;color:var(--ok);font-weight:800;min-height:1.2em;margin-top:6px}
+
+/* kuis */
+.quiz-head{display:flex;align-items:center;gap:12px;background:var(--tone-3);border-radius:16px;padding:12px 14px;margin-bottom:12px;font-weight:700}
+.quiz-head .qic{font-size:1.4rem}
+.q{background:#fff;border:1.5px solid var(--line);border-radius:var(--r);padding:18px;margin-bottom:12px;box-shadow:var(--shadow-s)}
+.q .qt{font-weight:800;margin:0 0 10px}
+.opt{display:block;width:100%;text-align:left;font:inherit;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;margin:8px 0;cursor:pointer;transition:border-color .12s ease,background .12s ease;min-height:46px}
+.opt:hover:not(:disabled){border-color:var(--tone);background:var(--tone-3)}
+.opt.right{background:var(--ok-bg);border-color:var(--ok);font-weight:800}
+.opt.wrong{background:var(--no-bg);border-color:var(--no)}
+.opt:disabled{cursor:default;color:var(--ink);opacity:1}
+.fb{margin-top:8px;border-radius:14px;padding:10px 14px;font-size:.94rem}
+.fb.ok{background:var(--ok-bg);color:#17705f}
+.fb.no{background:var(--no-bg);color:#9b2c40}
+.score{font-weight:800;font-size:1.1rem}
+
+/* aktivitas */
+.act{background:#fff;border:1.5px solid var(--tone-2);border-radius:var(--r);padding:20px;box-shadow:var(--shadow-s)}
+.act h3{margin:0 0 4px;font-family:var(--serif)}
+.calc label{display:block;font-weight:800;margin:12px 0 4px}
+.calc input[type=range]{width:100%;accent-color:var(--tone);height:28px}
+.calc .val{font-family:var(--serif);font-size:2.1rem;font-weight:800;color:var(--tone)}
+.calc .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+.calc .grid div{background:var(--tone-3);border-radius:16px;padding:12px 6px;text-align:center}
+.calc .grid b{display:block;font-family:var(--serif);font-size:1.4rem;color:var(--ink)}
+.calc .grid span{font-size:.78rem;color:var(--muted)}
+.calc .eq{margin-top:14px;background:#fff7ec;border-radius:16px;padding:12px 14px}
+
+.sort-item{border:1.5px solid var(--line);border-radius:16px;padding:12px 14px;margin:10px 0;background:#fff}
+.sort-item p{margin:0 0 8px;font-weight:700}
+.sort-item .row{justify-content:flex-start}
+.chip-btn{font:inherit;font-size:.88rem;font-weight:800;color:var(--ink);border-radius:99px;padding:8px 14px;border:1.5px solid var(--line);background:#fff;cursor:pointer;min-height:40px}
+.chip-btn:hover:not(:disabled){border-color:var(--tone);background:var(--tone-3)}
+.chip-btn:disabled{cursor:default;opacity:.5}
+.chip-btn.sel-ok{background:var(--ok-bg);border-color:var(--ok);opacity:1}
+.chip-btn.sel-no{background:var(--no-bg);border-color:var(--no);opacity:1}
+
+.scene{background:linear-gradient(160deg,#3c3170,#7b6cf6);color:#fff;border-radius:var(--r);padding:20px}
+.scene .clock{font-family:var(--serif);color:#ffe0a3;font-weight:800}
+.scene p{margin:6px 0 14px;font-size:1.05rem}
+.scene .choice{display:block;width:100%;text-align:left;font:inherit;font-weight:700;background:rgba(255,255,255,.14);color:#fff;border:1.5px solid rgba(255,255,255,.35);border-radius:14px;padding:12px 14px;margin:8px 0;cursor:pointer;min-height:46px}
+.scene .choice:hover{background:rgba(255,255,255,.24)}
+.scene .end{background:rgba(255,255,255,.14);border-radius:16px;padding:14px}
+.scene .end h4{margin:0 0 4px;color:#ffe0a3;font-size:1.1rem}
+
+.phone{max-width:420px;margin:0 auto;background:linear-gradient(180deg,#f3efff,#ffeef4);border-radius:30px;padding:14px;border:8px solid #2a2342}
+.phone .ph-top{text-align:center;font-weight:800;font-size:.86rem;color:var(--ink);padding:2px 0 10px;border-bottom:1px solid #e6dcf3;margin-bottom:10px}
+.bubble{max-width:86%;padding:10px 13px;border-radius:18px;margin:8px 0;font-size:.95rem;line-height:1.45;box-shadow:0 1px 0 rgba(0,0,0,.05)}
+.bubble.in{background:#fff;border-bottom-left-radius:5px}
+.bubble.out{background:#d8f6ec;margin-left:auto;border-bottom-right-radius:5px}
+.bubble .who{display:block;font-size:.75rem;font-weight:800;color:var(--peri)}
+.bubble .fwd{display:block;font-size:.73rem;font-style:italic;color:var(--muted)}
+
+.pledge label{display:flex;gap:10px;align-items:flex-start;padding:11px 13px;border-radius:14px;border:1.5px solid var(--line);background:#fff;margin:8px 0;cursor:pointer;font-weight:700}
+.pledge input{margin-top:5px;accent-color:var(--ok);width:18px;height:18px;flex:none}
+.pledge label:has(input:checked){border-color:var(--ok);background:var(--ok-bg)}
+
+.next{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:26px 0 50px}
+
+.map{display:grid;gap:12px}
+.map .m{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:start;background:#fff;border:1.5px solid var(--tone-2);border-radius:var(--r);padding:16px;box-shadow:var(--shadow-s)}
+.map .m .ar-s{font-family:var(--arab);font-size:1.4rem;color:var(--tone);direction:rtl}
+.map .m h3{margin:0;font-size:1rem}
+.map .m p{margin:2px 0 0;font-size:.93rem}
+.map .m .ic{font-size:1.5rem;width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:var(--tone-2)}
+
+.fq-bar{height:10px;border-radius:99px;background:#f1e4ea;overflow:hidden;margin:12px 0 18px}
+.fq-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--peri),var(--rose),var(--peach));transition:width .3s ease}
+.result{text-align:center;padding:30px 20px}
+.result .big{font-family:var(--serif);font-size:3.6rem;font-weight:800;line-height:1;background:linear-gradient(90deg,var(--peri),var(--rose));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* skor ringkas di beranda */
+.scores{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:16px}
+.scores div{background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:12px;text-align:center;box-shadow:var(--shadow-s)}
+.scores b{display:block;font-family:var(--serif);font-size:1.6rem;color:var(--rose-d)}
+.scores span{font-size:.8rem;color:var(--muted)}
+
+/* profil pengembang */
+.dev{display:grid;gap:18px;align-items:center;text-align:center}
+.avatar{width:128px;height:128px;margin:0 auto;border-radius:50%;display:grid;place-items:center;font-family:var(--serif);font-size:2.8rem;font-weight:800;color:#fff;background:linear-gradient(140deg,var(--peach),var(--rose) 50%,var(--peri));box-shadow:0 0 0 8px #fff,0 0 0 10px #ffd3e0,var(--shadow)}
+.dev h2{margin:6px 0 2px}
+.dev .role{display:inline-block;font-weight:800;font-size:.86rem;color:var(--rose-d);background:#fff1f5;padding:5px 14px;border-radius:99px}
+.facts{display:grid;gap:10px;margin-top:18px;text-align:left}
+.facts div{display:grid;grid-template-columns:40px minmax(0,1fr);gap:10px;align-items:start;background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:12px 14px}
+.facts .fi{font-size:1.3rem;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:#fff1f5}
+.facts small{display:block;color:var(--muted);font-weight:700;font-size:.78rem}
+.dev-mini{display:flex;gap:12px;align-items:center;background:#fff;border:1.5px solid var(--line);border-radius:var(--r);padding:14px 16px;text-decoration:none;color:inherit;box-shadow:var(--shadow-s)}
+.dev-mini .avatar{width:54px;height:54px;font-size:1.2rem;margin:0;box-shadow:none;flex:none}
+.dev-mini b{display:block}
+.dev-mini span{font-size:.88rem;color:var(--muted)}
+
+table{width:100%;border-collapse:collapse;font-size:.94rem}
+th,td{border:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top}
+th{background:#fff1f5}
+.gate{max-width:420px;margin:0 auto;text-align:center}
+.gate input{font:inherit;font-size:16px;width:100%;padding:12px 14px;border-radius:14px;border:1.5px solid var(--line);margin:12px 0}
+.warn{background:#fff7ec;border:1.5px solid #ffe2bf;border-radius:16px;padding:12px 14px;font-size:.92rem}
+
+.foot{background:linear-gradient(180deg,#fff8f4,#ffe9ef);color:#5d5475;text-align:center;padding:28px 18px 32px;font-size:.88rem;border-top:1px solid var(--line)}
+.foot p{margin:4px auto;max-width:720px}
+.foot a{color:var(--rose-d);font-weight:800}
+.foot .small{color:var(--muted)}
+
+@media (min-width:720px){
+  body{font-size:17px}
+  .journey{grid-template-columns:1fr 1fr}
+  .journey .pcard:first-child{grid-column:1/-1}
+  .dev{grid-template-columns:200px minmax(0,1fr);text-align:left}
+  .avatar{width:170px;height:170px;font-size:3.4rem}
+  .facts{grid-template-columns:1fr 1fr}
+}
+@media print{.topbar,.drawer,.stepnav,.foot,.next{display:none}}
+
+/* ===== tambahan: menu panjang ===== */
+.drawer{max-height:calc(100vh - 80px);overflow-y:auto}
+
+/* audio */
+.listen{display:inline-flex;align-items:center;gap:6px;font:inherit;font-weight:800;font-size:.9rem;color:var(--tone);background:#fff;border:1.5px solid var(--tone-2);border-radius:99px;padding:8px 16px;margin:0 0 12px;cursor:pointer;min-height:42px}
+.listen:hover{background:var(--tone-3)}
+.listen.on{background:var(--tone);color:#fff;border-color:var(--tone)}
+.audio-card{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:12px}
+.audio-card .listen{margin:0}
+
+/* diagram */
+.diagram h3{margin:0 0 12px;font-family:var(--serif)}
+.dg-bar{display:flex;height:34px;border-radius:12px;overflow:hidden;gap:2px}
+.dg-bar span{display:block}
+.dg-leg{list-style:none;padding:0;margin:12px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:6px 12px;font-size:.9rem}
+.dg-leg i{display:inline-block;width:12px;height:12px;border-radius:4px;margin-right:6px;vertical-align:-1px}
+.dg-flow{list-style:none;padding:0;margin:0;display:grid;gap:8px;counter-reset:f}
+.dg-flow li{position:relative;background:var(--tone-3);border:1.5px solid var(--tone-2);border-radius:14px;padding:11px 14px 11px 48px;font-weight:700;counter-increment:f}
+.dg-flow li::before{content:counter(f);position:absolute;left:12px;top:50%;transform:translateY(-50%);width:26px;height:26px;border-radius:50%;background:var(--tone);color:#fff;display:grid;place-items:center;font-size:.8rem}
+.dg-flow li:not(:last-child)::after{content:"↓";position:absolute;left:21px;bottom:-15px;color:var(--tone);font-weight:800;z-index:1}
+.dg-filter{display:grid;gap:8px}
+.dg-in{text-align:center;font-weight:800;background:var(--ink);color:#fff;border-radius:14px;padding:10px}
+.dg-q{display:flex;gap:10px;align-items:center;background:var(--tone-3);border:1.5px dashed var(--tone-2);border-radius:14px;padding:10px 12px;font-weight:700}
+.dg-q b{flex:none;width:26px;height:26px;border-radius:50%;background:var(--tone);color:#fff;display:grid;place-items:center;font-size:.8rem}
+.dg-out{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.dg-out span{text-align:center;font-weight:800;border-radius:14px;padding:10px;background:var(--ok-bg);color:var(--ok)}
+.dg-out span+span{background:var(--no-bg);color:var(--no)}
+.dg-ring{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.dg-node{background:var(--tone-3);border:1.5px solid var(--tone-2);border-radius:16px;padding:14px 12px;text-align:center;font-weight:700;font-size:.92rem}
+.dg-node.n2{order:4}.dg-node.n3{order:3}
+.dg-mid{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:72px;height:72px;border-radius:50%;background:var(--tone);color:#fff;display:grid;place-items:center;text-align:center;font-weight:800;font-size:.78rem;line-height:1.2;box-shadow:0 0 0 6px #fff}
+
+/* rangkuman bagian */
+.summ{background:linear-gradient(160deg,#fff,var(--tone-3));border:1.5px solid var(--tone-2)}
+.summ ul{margin:0;padding-left:20px}
+.summ li{margin:6px 0}
+.summ li::marker{content:"✔  ";color:var(--tone)}
+
+/* beranda tambahan */
+.goals ol{margin:0;padding-left:22px}
+.goals li{margin:6px 0}
+.resume{display:flex;gap:12px;align-items:center;margin-top:14px;text-decoration:none;color:inherit;background:var(--tone-3);border:1.5px solid var(--tone-2);border-radius:var(--r);padding:14px 16px}
+.resume .ic{font-size:1.6rem}
+.resume small{display:block;color:var(--muted);font-weight:700}
+.resume .go{margin-left:auto;font-weight:800;color:var(--tone);white-space:nowrap}
+.news{display:grid;gap:10px;margin-top:12px}
+.news a{display:block;background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:14px 16px;text-decoration:none;color:inherit;box-shadow:var(--shadow-s)}
+.news time{font-size:.78rem;font-weight:800;color:var(--rose-d)}
+.news b{display:block}
+.news span{font-size:.9rem;color:var(--muted)}
+.quick{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.quick a{text-decoration:none;font-weight:800;font-size:.9rem;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:99px;padding:9px 14px}
+.quick a:hover{border-color:var(--rose);color:var(--rose-d)}
+
+/* daftar materi */
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.meta small{display:block;color:var(--muted);font-weight:700;font-size:.78rem}
+.filter{display:flex;gap:8px;margin:20px 0 6px;flex-wrap:wrap}
+.filter button{font:inherit;font-weight:800;font-size:.9rem;border-radius:99px;padding:9px 16px;border:1.5px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;min-height:42px}
+.filter button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.grp{font-family:var(--serif);margin:22px 0 8px;font-size:1.1rem}
+.mitem{display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:12px;align-items:center;background:#fff;border:1.5px solid var(--tone-2);border-radius:18px;padding:12px 14px;margin:8px 0;text-decoration:none;color:inherit}
+.mitem .ic{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;font-size:1.4rem;background:var(--tone-3)}
+.mitem small{display:block;color:var(--muted)}
+
+/* progres */
+.prog-top{display:flex;gap:18px;align-items:center}
+.ring{--p:0;flex:none;width:92px;height:92px;border-radius:50%;background:conic-gradient(var(--rose) calc(var(--p)*1%),#f6e6ec 0);display:grid;place-items:center}
+.ring span{width:70px;height:70px;border-radius:50%;background:#fff;display:grid;place-items:center;font-family:var(--serif);font-weight:800;font-size:1.25rem;color:var(--rose-d)}
+.ptable{display:grid;gap:8px;margin-top:10px}
+.prow{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:10px;align-items:center;background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:10px 12px}
+.prow .ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--tone-3)}
+.prow small{display:block;color:var(--muted);font-size:.8rem}
+.badge.warnb{background:#fff2e0;color:#b5650c}
+.todo{margin:0;padding-left:4px;list-style:none}
+.todo li{margin:8px 0}
+
+/* glosarium */
+.search{width:100%;font:inherit;font-size:16px;padding:13px 16px;border-radius:99px;border:1.5px solid var(--line);background:#fff;margin-bottom:14px}
+.search:focus{outline:none;border-color:var(--rose)}
+.gloss{margin:0;display:grid;gap:10px}
+.gloss div{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:12px 16px}
+.gloss dt{font-weight:800;color:var(--rose-d)}
+.gloss dd{margin:2px 0 0}
+
+/* unduhan */
+.dl{display:grid;gap:12px;margin-bottom:12px}
+.dlc{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:12px;align-items:center;text-decoration:none;color:inherit}
+.dlc .ic{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;font-size:1.5rem;background:#fff1f5}
+.dlc small{display:block;color:var(--muted)}
+.dlc .btn{padding:10px 16px;min-height:40px;font-size:.88rem}
+
+/* tanya jawab */
+.gform{width:100%;height:760px;border:0;border-radius:14px;background:#fff}
+.lbl{display:block;font-weight:800;margin:10px 0 6px}
+select{width:100%;font:inherit;font-size:16px;padding:11px 12px;border-radius:14px;border:1.5px solid var(--line);background:#fff}
+.warn-soft{background:#fff7ec;border-color:#ffe2bf}
+.faq{display:grid;gap:10px}
+.faq details{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:12px 16px}
+.faq summary{font-weight:800;cursor:pointer}
+.faq details[open] summary{color:var(--rose-d)}
+.faq p{margin:8px 0 0}
+@media (max-width:520px){.dlc{grid-template-columns:44px minmax(0,1fr)}.dlc .btn{grid-column:1/-1;justify-content:center}.mitem{grid-template-columns:44px minmax(0,1fr)}.mitem .badge{grid-column:2;justify-self:start}}
+
+/* ===== tata letak lega (v3) ===== */
+body{line-height:1.75}
+.sec{padding:clamp(44px,7vw,72px) 0}
+.sec.tight{padding:22px 0 0}
+.band-soft{background:linear-gradient(180deg,#fff1f5 0%,#fff8f4 100%)}
+.sec-head{text-align:center;margin-bottom:22px}
+.sec-head h2{margin:0}
+.hero p.lead{font-size:1.12rem;max-width:440px}
+.hero{padding-top:56px}
+.card{padding:clamp(20px,4vw,28px)}
+.card p,.slide p,.mat p{max-width:62ch}
+
+/* tujuan: tile ikon */
+.goal-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.gt{background:var(--tone-3);border:1.5px solid var(--tone-2);border-radius:20px;padding:18px 14px;text-align:center}
+.gt .gi{display:grid;place-items:center;width:52px;height:52px;margin:0 auto 8px;border-radius:16px;background:#fff;font-size:1.6rem}
+.gt b{display:block;line-height:1.3}
+.gt small{display:block;color:var(--muted);line-height:1.4;margin-top:4px;font-size:.8rem}
+.more{margin-top:16px;text-align:center}
+.more summary{display:inline-block;cursor:pointer;font-weight:800;color:var(--rose-d);padding:8px 14px;border-radius:99px;background:#fff1f5}
+.more ol{text-align:left;max-width:620px;margin:14px auto 0}
+
+/* jalur materi lebih ringkas */
+.pcard{padding:18px}
+.pcard h3{font-size:1.1rem;margin-top:2px}
+.pcard .badges:empty{display:none}
+.pcard::after{content:"›";position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:1.8rem;color:var(--tone);font-weight:300}
+.pcard > div:last-of-type{padding-right:22px}
+
+/* tile fitur */
+.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.tile{display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px;background:#fff;border:1.5px solid var(--line);border-radius:20px;padding:18px 8px;text-decoration:none;color:inherit;box-shadow:var(--shadow-s);transition:transform .15s ease}
+.tile:hover{transform:translateY(-3px)}
+.tile span{font-size:1.8rem;line-height:1.2}
+.tile b{font-size:.92rem;line-height:1.3;margin-top:4px}
+.tile small{font-size:.76rem;color:var(--muted)}
+.news{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 10px}
+.news a{flex:0 0 min(78%,280px);scroll-snap-align:start}
+.resume .go,.dev-mini .go{margin-left:auto;font-size:1.4rem;color:var(--tone);font-weight:800}
+.dev-mini{align-items:center}
+
+/* header bagian ramping */
+.phead.slim{padding:22px 0 20px}
+.phead.slim h1{font-size:clamp(1.7rem,5.5vw,2.3rem);margin:10px 0 2px}
+.ph-row{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.phead.slim .ar-pillar{font-size:clamp(1.6rem,6vw,2.4rem);margin:0;white-space:nowrap}
+
+/* stepper */
+.stepper{position:sticky;top:59px;z-index:10;background:rgba(255,248,244,.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.stepper ol{list-style:none;margin:0;padding:10px 0;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.stepper ol::-webkit-scrollbar{display:none}
+.stepper li{flex:none}
+.stepper button{display:flex;align-items:center;gap:6px;font:inherit;font-size:.8rem;font-weight:800;color:var(--muted);background:#fff;border:1.5px solid var(--line);border-radius:99px;padding:5px 12px 5px 5px;cursor:pointer;min-height:38px}
+.stepper .sn{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--tone-3);color:var(--tone);font-size:.75rem}
+.stepper button.past .sn{background:var(--tone-2)}
+.stepper button.on{background:var(--tone);border-color:var(--tone);color:#fff}
+.stepper button.on .sn{background:#fff;color:var(--tone)}
+.stepper .sbar{height:3px;background:var(--tone-3)}
+.stepper .sbar i{display:block;height:100%;background:var(--tone);transition:width .3s ease}
+
+/* panggung satu langkah */
+.stage{padding-bottom:110px;min-height:55vh}
+.step{display:none;padding:30px 0 10px}
+.step.on{display:block;animation:rise .35s ease}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.step.on{animation:none}}
+.step > h2{font-size:1.5rem;margin-bottom:18px}
+.step > * + *{margin-top:16px}
+.hero-step{text-align:center;padding:10px 0 6px}
+.big-ic{display:grid;place-items:center;width:96px;height:96px;margin:0 auto 14px;border-radius:30px;background:var(--tone-2);font-size:3rem}
+.lead-step{font-family:var(--serif);font-size:clamp(1.2rem,4vw,1.45rem);line-height:1.45;margin:0 auto;max-width:30ch}
+
+/* slider kartu penjelasan */
+.slider{margin-top:6px}
+.slides{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 2px 14px;scrollbar-width:none;outline:none}
+.slides::-webkit-scrollbar{display:none}
+.slide{flex:0 0 88%;max-width:560px;scroll-snap-align:start;background:#fff;border:1.5px solid var(--tone-2);border-radius:24px;padding:24px 22px;box-shadow:var(--shadow-s);min-height:300px}
+.sl-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.sl-ic{display:grid;place-items:center;width:58px;height:58px;border-radius:18px;background:var(--tone-3);font-size:1.8rem}
+.sl-n{font-size:.8rem;font-weight:800;color:var(--tone);background:var(--tone-3);padding:4px 10px;border-radius:99px}
+.slide h3{font-family:var(--serif);font-size:1.25rem;line-height:1.3;margin:0 0 10px}
+.slide p{margin:0 0 8px}
+.checks{list-style:none;padding:0;margin:6px 0 0}
+.checks li{position:relative;padding-left:28px;margin:8px 0}
+.checks li::before{content:"✓";position:absolute;left:0;top:1px;width:20px;height:20px;border-radius:50%;background:var(--tone-2);color:var(--tone);font-size:.75rem;font-weight:800;display:grid;place-items:center}
+.sl-nav{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:4px}
+.sl-btn{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--tone-2);background:#fff;color:var(--tone);font-size:1.5rem;line-height:1;cursor:pointer}
+.sl-btn:hover{background:var(--tone-3)}
+.dots{display:flex;gap:6px}
+.dots i{width:8px;height:8px;border-radius:99px;background:var(--tone-2);transition:width .2s ease}
+.dots i.on{width:22px;background:var(--tone)}
+.hint{text-align:center;font-size:.85rem;color:var(--muted)}
+
+/* contoh situasi bergaya panel */
+.story .panel{display:flex;gap:10px;align-items:flex-start;background:var(--tone-3);border-radius:16px;padding:12px 14px}
+.story .panel span{flex:none}
+
+/* rangkuman kartu */
+.summ-grid{display:grid;gap:12px}
+.summ-c{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1.5px solid var(--tone-2);border-radius:18px;padding:16px 18px}
+.summ-c span{flex:none;width:32px;height:32px;border-radius:12px;display:grid;place-items:center;background:var(--tone);color:#fff;font-weight:800}
+.summ-c p{margin:0}
+
+/* pager bawah */
+.pager{position:fixed;left:0;right:0;bottom:0;z-index:15;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:10px 0 calc(10px + env(safe-area-inset-bottom))}
+.pager .wrap{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.pager .btn{min-height:46px;padding:11px 18px}
+.pg-info{font-weight:800;color:var(--muted);font-size:.9rem}
+body.has-pager .foot{padding-bottom:100px}
+
+@media (min-width:720px){
+  .slide{flex-basis:70%}
+  .summ-grid{grid-template-columns:1fr 1fr}
+  .tiles{grid-template-columns:repeat(6,minmax(0,1fr))}
+}
+@media (max-width:380px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.slide .inti{font-size:1.08rem;font-weight:600;line-height:1.6;color:var(--ink)}
+.lanjut{margin-top:10px}
+.lanjut summary{display:inline-block;cursor:pointer;font-weight:800;font-size:.88rem;color:var(--tone);background:var(--tone-3);padding:6px 12px;border-radius:99px}
+.lanjut[open] summary{margin-bottom:8px}
+.lanjut p{color:#4a4163}
+.slide{min-height:260px}
+
+</style>
 </head>
 <body>
   <a class="skip" href="#app">Lewati ke isi</a>
@@ -46,8 +542,1024 @@
     <p>Dikembangkan oleh <a href="#pengembang">Kiromim Baroroh</a> · STIT Muhammadiyah Bojonegoro · 2026</p>
     <p class="small">Jawaban refleksi dan kuis hanya tersimpan di perangkatmu sendiri. Website ini tidak mengumpulkan data pribadi.</p>
   </footer>
-  <script src="js/config.js"></script>
-  <script src="js/content.js"></script>
-  <script src="js/app.js"></script>
+<script>
+/* ===== PENGATURAN (ubah di sini) ===== */
+/*
+  PENGATURAN WEBSITE
+  ------------------
+  1. VIDEO: isi dengan ID video YouTube (bagian setelah "v=" pada tautan).
+     Contoh: https://www.youtube.com/watch?v=AbCdEf12345  ->  "AbCdEf12345"
+     Biarkan "" (kosong) bila video belum dipilih; halaman akan menampilkan kotak penanda.
+  2. TANYA: tempat siswa mengirim pertanyaan ke guru (website statis tidak bisa menyimpan pesan sendiri).
+     - googleForm: tautan Google Form (bentuk .../viewform). Bila diisi, form tampil langsung di halaman Tanya Jawab.
+     - whatsapp: nomor WA guru dengan kode negara tanpa "+" atau spasi, misalnya "6281234567890".
+     - grupDiskusi: tautan grup WhatsApp/Telegram kelas untuk diskusi (opsional).
+  3. GURU_PASSWORD: kata sandi halaman guru. Ganti sebelum dipakai di kelas.
+     Catatan: ini hanya penyaring ringan di sisi browser, bukan pengaman data.
+*/
+window.SITE_CONFIG = {
+  sekolah: "SMAN 1 Kepohbaru",
+  VIDEOS: {
+    1: { id: "", judul: "Video: Makna QS. Al-‘Ashr dan nilai waktu" },
+    2: { id: "", judul: "Video: Muhasabah dan pertanggungjawaban waktu" },
+    3: { id: "", judul: "Video: Bermedia sosial yang bernilai amal saleh" },
+    4: { id: "", judul: "Video: Tabayyun dan cara mengecek kabar" },
+    5: { id: "", judul: "Video: Sabar dan saling menguatkan" }
+  },
+  TANYA: {
+    googleForm: "",
+    whatsapp: "",
+    grupDiskusi: "",
+    namaGuru: "Guru PAI"
+  },
+  GURU_PASSWORD: "alashr2027"
+};
+
+</script>
+<script>
+/* Seluruh isi materi. Teks Arab dan terjemah wajib ditelaah ahli materi PAI sebelum dipakai di kelas. */
+window.CONTENT = {
+  alAshr: {
+    arab: "وَالْعَصْرِ ﴿١﴾ إِنَّ الْإِنسَانَ لَفِي خُسْرٍ ﴿٢﴾ إِلَّا الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ وَتَوَاصَوْا بِالْحَقِّ وَتَوَاصَوْا بِالصَّبْرِ ﴿٣﴾",
+    latin: "Wal-‘ashr. Innal-insāna lafī khusr. Illal-lażīna āmanū wa ‘amiluṣ-ṣāliḥāti wa tawāṣau bil-ḥaqqi wa tawāṣau biṣ-ṣabr.",
+    arti: "Demi masa. Sungguh, manusia berada dalam kerugian, kecuali orang-orang yang beriman dan mengerjakan kebajikan serta saling menasihati untuk kebenaran dan saling menasihati untuk kesabaran.",
+    sumber: "QS. Al-‘Ashr [103]: 1–3"
+  },
+
+  pilar: [
+    { no: 1, ikon: "⏳", nama: "Nilai Waktu", arab: "وَالْعَصْرِ", ringkas: "Waktu adalah modal yang terus berjalan dan tidak bisa diputar ulang." },
+    { no: 2, ikon: "💡", nama: "Iman", arab: "آمَنُوا", ringkas: "Sadar bahwa waktu adalah titipan yang akan ditanya." },
+    { no: 3, ikon: "🌱", nama: "Amal Saleh", arab: "وَعَمِلُوا الصَّالِحَاتِ", ringkas: "Mengisi waktu, termasuk di layar, dengan hal yang bermanfaat." },
+    { no: 4, ikon: "🔎", nama: "Menasihati dalam Kebenaran", arab: "وَتَوَاصَوْا بِالْحَقِّ", ringkas: "Tabayyun sebelum percaya dan membagikan, lalu mengingatkan dengan santun." },
+    { no: 5, ikon: "🤝", nama: "Menasihati dalam Kesabaran", arab: "وَتَوَاصَوْا بِالصَّبْرِ", ringkas: "Menahan dorongan terus menggulir dan saling menguatkan." }
+  ],
+
+  bagian: [
+    /* ======================= BAGIAN 1 ======================= */
+    {
+      no: 1, slug: "waktu", ikon: "⏳", judul: "Demi Masa", sub: "Nilai waktu dan kerugian manusia",
+      pertemuan: 1,
+      tujuan: "Kamu dapat menjelaskan makna waktu dan alasan manusia berada dalam kerugian menurut QS. Al-‘Ashr ayat 1–2.",
+      pemantik: "Coba ingat semalam. Jam berapa kamu terakhir menutup ponsel? Apa yang terakhir kamu lihat sebelum tidur, dan bagaimana perasaanmu sesudahnya?",
+      dalil: [
+        { tipe: "ayat", arab: "وَالْعَصْرِ ﴿١﴾ إِنَّ الْإِنسَانَ لَفِي خُسْرٍ ﴿٢﴾", arti: "Demi masa. Sungguh, manusia berada dalam kerugian.", sumber: "QS. Al-‘Ashr [103]: 1–2" },
+        { tipe: "hadis", arab: "نِعْمَتَانِ مَغْبُونٌ فِيهِمَا كَثِيرٌ مِنَ النَّاسِ: الصِّحَّةُ وَالْفَرَاغُ", arti: "Ada dua nikmat yang banyak manusia tertipu di dalamnya, yaitu kesehatan dan waktu luang.", sumber: "HR. al-Bukhari no. 6412" }
+      ],
+      materi: [
+        { h: "Allah bersumpah demi waktu", p: "Surah Al-‘Ashr dibuka dengan sumpah: <em>wal-‘ashr</em>, demi masa. Sesuatu yang dijadikan sumpah oleh Allah adalah hal yang sangat penting. Sesudah sumpah itu, Allah langsung menyatakan bahwa manusia berada dalam kerugian (<em>khusr</em>). Artinya, waktu dan untung-rugi hidup manusia berkaitan erat." },
+        { h: "Waktu itu netral, kitalah yang mewarnainya", p: "Quraish Shihab dalam <em>Tafsir Al-Mishbah</em> menjelaskan bahwa <em>al-‘ashr</em> mencakup seluruh waktu tempat hidup manusia berlangsung. Waktu tidak baik dan tidak buruk dengan sendirinya. Pilihan kitalah yang membuatnya bernilai atau terbuang. Jadi, malam yang kamu habiskan di depan layar juga termasuk waktu yang dimaksud ayat ini." },
+        { h: "Rugi seperti pedagang yang kehilangan modal", p: "Wahbah az-Zuhaili dalam <em>Tafsir al-Munir</em> memakai bahasa perdagangan: kerugian berarti hilangnya modal berupa umur dan waktu karena dikelola dengan buruk. Setiap menit yang lewat tidak bisa dibeli kembali." },
+        { h: "Tertipu tanpa sadar", p: "Dalam hadis dua nikmat, kata <em>maghbūn</em> menggambarkan orang yang dirugikan tanpa menyadarinya. Rasanya mirip dengan berniat membuka ponsel sebentar, lalu baru sadar ketika jam istirahat sudah habis." },
+        { h: "Bukan larangan bermedia sosial", p: "Nilai waktu tidak berarti kamu harus menjauhi media sosial. Yang dipersoalkan adalah waktu yang habis tanpa disadari pada konten yang menguras perasaan dan tidak membawa manfaat." }
+      ],
+      tafsir: [
+        { m: "Quraish Shihab", k: "Tafsir Al-Mishbah", t: "Waktu bersifat netral dan diwarnai oleh amal. Rugi berarti kehilangan kesempatan memperbaiki diri." },
+        { m: "Ibnu Katsir", k: "Tafsir al-Qur’an al-‘Azim", t: "Surah ini adalah peta jalan keselamatan: iman harus tampak dalam amal nyata." },
+        { m: "Wahbah az-Zuhaili", k: "Tafsir al-Munir", t: "Umur dan waktu adalah modal. Rugi berarti modal itu hilang karena dikelola dengan buruk." },
+        { m: "Sayyid Qutb", k: "Fi Zhilal al-Qur’an", t: "Surah ini adalah pedoman hidup yang bergerak. Iman mendorong karya dan perbaikan." }
+      ],
+      cerita: {
+        judul: "Malam Fajar",
+        teks: [
+          "Pukul 21.30 Fajar membuka ponsel untuk mengecek tugas di grup kelas. Di beranda muncul video kecelakaan di jalan tol. Ia menontonnya, lalu algoritma menyuguhkan video serupa, kemudian komentar-komentar yang saling menyalahkan.",
+          "Saat Fajar melihat jam, sudah pukul 23.40. Tugasnya belum dikerjakan, dadanya terasa tidak enak, dan ia sulit tidur. Esok paginya ia hampir terlambat salat Subuh."
+        ],
+        tanya: "Menurutmu, apa saja yang “hilang” dari Fajar malam itu? Kaitkan dengan kata khusr (rugi) dalam ayat 2."
+      },
+      aktivitas: "kalkulator",
+      refleksi: "Jika waktu adalah modal, apa satu hal yang ingin kamu “beli” dengan waktu malammu minggu ini?",
+      kuis: [
+        { q: "Menurut Quraish Shihab, waktu pada dasarnya bersifat ....", o: ["selalu baik bagi siapa pun", "netral, lalu diwarnai oleh pilihan amal manusia", "buruk sehingga harus dihindari", "tidak berpengaruh pada nilai hidup manusia"], a: 1, w: "Waktu tidak baik atau buruk dengan sendirinya. Amal dan pilihan manusialah yang membuatnya bernilai atau terbuang." },
+        { q: "Wahbah az-Zuhaili menggambarkan kerugian (khusr) dalam ayat 2 seperti ....", o: ["pedagang yang kehilangan modal berupa umur dan waktu", "petani yang gagal panen karena hujan", "siswa yang lupa membawa buku", "orang yang kehilangan teman"], a: 0, w: "Az-Zuhaili memakai analogi perniagaan: umur dan waktu adalah modal, dan rugi berarti modal itu hilang karena dikelola dengan buruk." },
+        { q: "Kata maghbūn dalam hadis dua nikmat menggambarkan orang yang ....", o: ["sengaja membuang waktu", "dirugikan tanpa menyadarinya", "terlalu sibuk beribadah", "selalu sehat dan kaya"], a: 1, w: "Maghbūn berarti tertipu atau dirugikan tanpa sadar, mirip dengan tidak sadar bahwa waktu habis karena terus menggulir layar." }
+      ]
+    },
+
+    /* ======================= BAGIAN 2 ======================= */
+    {
+      no: 2, slug: "iman", ikon: "💡", judul: "Waktu yang Akan Ditanya", sub: "Iman dan kesadaran akan pertanggungjawaban",
+      pertemuan: 2,
+      tujuan: "Kamu dapat menafsirkan hubungan iman, kesadaran akan pertanggungjawaban waktu, dan keputusan untuk berhenti menggulir.",
+      pemantik: "Pernahkah kamu merasa ingin berhenti scroll, tetapi jempol terus bergerak? Apa yang biasanya akhirnya membuatmu berhenti?",
+      dalil: [
+        { tipe: "hadis", arab: "لَا تَزُولُ قَدَمَا عَبْدٍ يَوْمَ الْقِيَامَةِ حَتَّى يُسْأَلَ عَنْ عُمُرِهِ فِيمَا أَفْنَاهُ، وَعَنْ عِلْمِهِ فِيمَ فَعَلَ، وَعَنْ مَالِهِ مِنْ أَيْنَ اكْتَسَبَهُ وَفِيمَ أَنْفَقَهُ، وَعَنْ جِسْمِهِ فِيمَ أَبْلَاهُ", arti: "Kedua kaki seorang hamba tidak akan bergeser pada hari kiamat sampai ia ditanya tentang umurnya untuk apa dihabiskan, tentang ilmunya apa yang ia perbuat dengannya, tentang hartanya dari mana ia peroleh dan ke mana ia belanjakan, serta tentang tubuhnya untuk apa ia gunakan.", sumber: "HR. at-Tirmidzi no. 2417" },
+        { tipe: "ayat", arab: "يَا أَيُّهَا الَّذِينَ آمَنُوا اتَّقُوا اللَّهَ وَلْتَنظُرْ نَفْسٌ مَّا قَدَّمَتْ لِغَدٍ", arti: "Wahai orang-orang yang beriman, bertakwalah kepada Allah dan hendaklah setiap orang memperhatikan apa yang telah diperbuatnya untuk hari esok.", sumber: "QS. Al-Hasyr [59]: 18 (penggalan)" }
+      ],
+      materi: [
+        { h: "Iman yang pertama disebut", p: "Golongan pertama yang selamat dari kerugian dalam Al-‘Ashr adalah <em>alladzīna āmanū</em>, yaitu orang-orang yang beriman. Ibnu Katsir menegaskan bahwa iman harus tampak dalam perbuatan nyata, termasuk dalam cara kita memakai waktu." },
+        { h: "Waktu adalah titipan", p: "Hadis riwayat at-Tirmidzi menyebut umur sebagai hal pertama yang akan ditanyakan: untuk apa dihabiskan. Waktu bukan milik pribadi yang bebas dipakai sesuka hati. Waktu adalah amanah." },
+        { h: "Rem dari dalam diri", p: "Aplikasi media sosial dirancang tanpa titik berhenti: guliran tak berujung dan rekomendasi yang terus muncul. Karena itu, kita butuh “rem” dari dalam. Kesadaran bahwa Allah Maha Melihat dan bahwa waktu akan ditanya dapat menjadi alasan kuat untuk berkata, “Cukup, aku berhenti di sini.”" },
+        { h: "Muhasabah: menghitung diri", p: "QS. Al-Hasyr ayat 18 mengajak setiap orang memperhatikan apa yang telah ia siapkan untuk hari esok. Inilah <em>muhasabah</em>. Sebelum tidur, kamu bisa bertanya pada diri sendiri: hari ini waktuku habis untuk apa?" },
+        { h: "Bukan untuk menakut-nakuti", p: "Kesadaran ini tidak dimaksudkan untuk membuatmu merasa bersalah terus-menerus. Iman menumbuhkan harapan. Setiap saat kamu selalu bisa memilih untuk memperbaiki cara memakai waktu." }
+      ],
+      cerita: {
+        judul: "Dua Pilihan Salsa",
+        teks: [
+          "Salsa sedang menonton rangkaian video tentang konflik di luar negeri. Kontennya membuatnya marah dan sedih, tetapi rekomendasi berikutnya terus muncul.",
+          "Ia teringat pelajaran PAI bahwa umur akan ditanya “untuk apa dihabiskan”. Salsa menaruh ponsel, berdoa untuk para korban, lalu menyelesaikan bacaan untuk ulangan besok."
+        ],
+        tanya: "Bagian mana dari cerita ini yang menunjukkan peran iman dalam mengendalikan diri?"
+      },
+      aktivitas: "skenario",
+      refleksi: "Tuliskan satu kalimat “pengingat iman” yang ingin kamu ucapkan pada dirimu ketika jempol mulai sulit berhenti.",
+      kuis: [
+        { q: "Dalam hadis riwayat at-Tirmidzi no. 2417, hal tentang umur yang akan ditanyakan adalah ....", o: ["berapa lama umurnya", "untuk apa umur itu dihabiskan", "siapa teman-temannya", "berapa banyak pengikut media sosialnya"], a: 1, w: "Umur akan ditanya “fīmā afnāhu”, yaitu untuk apa dihabiskan. Karena itu, waktu adalah amanah." },
+        { q: "Mengapa iman dapat membantu seseorang berhenti menggulir konten negatif?", o: ["Karena takut ketinggalan berita", "Karena ia sadar waktu adalah titipan yang akan dipertanggungjawabkan", "Karena baterai ponselnya habis", "Karena dilarang orang tua"], a: 1, w: "Iman menumbuhkan kesadaran diawasi dan bertanggung jawab. Kesadaran ini menjadi rem dari dalam diri, bukan sekadar karena aturan dari luar." },
+        { q: "QS. Al-Hasyr ayat 18 mengajarkan sikap muhasabah, yaitu ....", o: ["menghitung jumlah like", "memperhatikan dan menilai apa yang telah diperbuat untuk hari esok", "membandingkan diri dengan orang lain", "menghindari semua teknologi"], a: 1, w: "Muhasabah berarti menghitung dan menilai diri: apa yang sudah kita siapkan untuk hari esok, termasuk ke mana waktu kita pergi." }
+      ]
+    },
+
+    /* ======================= BAGIAN 3 ======================= */
+    {
+      no: 3, slug: "amal-saleh", ikon: "🌱", judul: "Layar yang Berbuah Kebaikan", sub: "Amal saleh dan perbuatan yang sia-sia",
+      pertemuan: 2,
+      tujuan: "Kamu dapat membedakan penggunaan media sosial yang bernilai amal saleh dari yang tergolong sia-sia.",
+      pemantik: "Sebutkan satu hal baik yang pernah kamu dapatkan atau lakukan lewat media sosial.",
+      dalil: [
+        { tipe: "ayat", arab: "وَالَّذِينَ هُمْ عَنِ اللَّغْوِ مُعْرِضُونَ", arti: "Dan orang-orang yang menjauhkan diri dari (perbuatan dan perkataan) yang tidak berguna.", sumber: "QS. Al-Mu’minun [23]: 3" },
+        { tipe: "hadis", arab: "مِنْ حُسْنِ إِسْلَامِ الْمَرْءِ تَرْكُهُ مَا لَا يَعْنِيهِ", arti: "Di antara tanda baiknya keislaman seseorang adalah meninggalkan hal yang tidak bermanfaat baginya.", sumber: "HR. at-Tirmidzi no. 2317" }
+      ],
+      materi: [
+        { h: "Amal saleh: kebaikan yang nyata", p: "Sesudah iman, Al-‘Ashr menyebut <em>wa ‘amiluṣ-ṣāliḥāt</em>, yaitu mengerjakan kebajikan. Iman yang hidup akan tampak dalam perbuatan yang bermanfaat bagi diri sendiri dan orang lain." },
+        { h: "Media sosial bisa jadi ladang amal", p: "Media sosial tidak dilarang. Kita bisa belajar, mengikuti kajian, berbagi informasi yang benar, menyemangati teman, atau berkarya. Semua itu dapat bernilai amal saleh." },
+        { h: "Waspadai yang sia-sia (laghw)", p: "Al-Qur’an menyebut menjauhi <em>laghw</em>, yaitu perbuatan yang tidak berguna, sebagai ciri orang beriman. Menggulir konten negatif berjam-jam tanpa tujuan, sampai mengorbankan tidur, belajar, dan ibadah, termasuk hal yang sebaiknya ditinggalkan." },
+        { h: "Ukurannya: manfaat dan dampak", p: "Untuk menilai kebiasaan bermedia, tanyakan tiga hal: Apakah ini bermanfaat? Apakah ini menggeser kewajibanku? Bagaimana perasaanku sesudahnya? Konten yang sama bisa bermanfaat bila dibaca secukupnya, tetapi menjadi sia-sia bila diulang-ulang sampai larut malam." }
+      ],
+      cerita: {
+        judul: "Akun Kecil Dimas",
+        teks: [
+          "Dimas dulu sering menghabiskan malam menonton potongan video perkelahian. Suatu hari ia mencoba merangkum materi kajian yang ia ikuti menjadi slide sederhana dan membagikannya di story.",
+          "Beberapa teman membalas, “Makasih, jadi paham.” Waktu yang dipakai Dimas sama-sama di layar, tetapi kali ini hasilnya berbeda."
+        ],
+        tanya: "Apa perbedaan kedua cara Dimas memakai media sosial jika dilihat dari nilai amal saleh?"
+      },
+      aktivitas: "sortir",
+      refleksi: "Pilih satu kebiasaan bermediamu yang ingin kamu ubah menjadi “amal saleh kecil” minggu ini. Seperti apa bentuknya?",
+      kuis: [
+        { q: "Menurut QS. Al-Mu’minun ayat 3, salah satu ciri orang beriman adalah ....", o: ["memiliki banyak pengikut", "menjauhkan diri dari hal yang tidak berguna (laghw)", "tidak pernah memakai ponsel", "selalu mengikuti tren terbaru"], a: 1, w: "Menjauhi laghw, yaitu perbuatan atau perkataan yang tidak berguna, disebut sebagai ciri orang beriman." },
+        { q: "Penggunaan media sosial berikut yang paling sesuai dengan amal saleh adalah ....", o: ["mengulang video kejadian tragis sampai larut malam", "membagikan info beasiswa yang sumbernya sudah dicek ke grup kelas", "ikut berkomentar kasar di kolom perdebatan", "membandingkan diri dengan unggahan teman"], a: 1, w: "Membagikan informasi yang benar dan bermanfaat bagi teman adalah bentuk amal saleh di media sosial." },
+        { q: "Pernyataan yang tepat tentang media sosial menurut nilai Al-‘Ashr adalah ....", o: ["media sosial haram digunakan", "media sosial dapat bernilai amal saleh bila dipakai untuk hal yang bermanfaat", "semua konten di media sosial sia-sia", "waktu di media sosial tidak dihitung"], a: 1, w: "Al-‘Ashr tidak melarang media sosial. Yang penting adalah mengarahkan waktu untuk iman dan amal saleh." }
+      ]
+    },
+
+    /* ======================= BAGIAN 4 ======================= */
+    {
+      no: 4, slug: "kebenaran", ikon: "🔎", judul: "Tahan Jempol, Cek Dulu", sub: "Saling menasihati dalam kebenaran (tabayyun)",
+      pertemuan: 3,
+      tujuan: "Kamu dapat menyimpulkan tindakan yang tepat ketika menerima kabar negatif di media sosial, dengan merujuk pada tabayyun.",
+      pemantik: "Pernahkah kamu menerima pesan berantai yang membuat panik, lalu ternyata tidak benar? Bagaimana rasanya?",
+      dalil: [
+        { tipe: "ayat", arab: "يَا أَيُّهَا الَّذِينَ آمَنُوا إِن جَاءَكُمْ فَاسِقٌ بِنَبَإٍ فَتَبَيَّنُوا أَن تُصِيبُوا قَوْمًا بِجَهَالَةٍ فَتُصْبِحُوا عَلَىٰ مَا فَعَلْتُمْ نَادِمِينَ", arti: "Wahai orang-orang yang beriman, jika seseorang yang fasik datang kepadamu membawa suatu berita, maka telitilah kebenarannya agar kamu tidak mencelakakan suatu kaum karena ketidaktahuan, yang akhirnya kamu menyesali perbuatanmu itu.", sumber: "QS. Al-Hujurat [49]: 6" },
+        { tipe: "ayat", arab: "وَتَوَاصَوْا بِالْحَقِّ", arti: "...dan saling menasihati untuk kebenaran.", sumber: "QS. Al-‘Ashr [103]: 3 (penggalan)" }
+      ],
+      materi: [
+        { h: "Kebenaran perlu dicek", p: "Pilar ketiga Al-‘Ashr adalah <em>tawāṣau bil-ḥaqq</em>, yaitu saling menasihati dalam kebenaran. Di media sosial, langkah pertama untuk menjaga kebenaran adalah <em>tabayyun</em>: memeriksa kebenaran kabar sebelum mempercayai atau membagikannya." },
+        { h: "Mengapa kabar buruk cepat menyebar?", p: "Penelitian menunjukkan bahwa judul berita bernada negatif lebih sering diklik. Kabar menakutkan memancing rasa penasaran dan keinginan untuk segera membagikannya. Karena itu, kita perlu sengaja memberi jeda." },
+        { h: "Lima langkah tabayyun", list: ["Tahan jempol: jangan langsung meneruskan.", "Cek sumber: siapa yang pertama kali menyebarkan? Apakah ada nama media atau lembaga resmi?", "Cek tanggal dan tempat: jangan-jangan itu kejadian lama atau dari daerah lain.", "Bandingkan dengan berita resmi atau situs cek fakta.", "Bila keliru, ingatkan dengan santun, misalnya lewat pesan pribadi."] },
+        { h: "Menasihati tanpa mempermalukan", p: "Saling menasihati berarti peduli. Teman yang keliru membagikan kabar tidak perlu dipermalukan di grup. Sampaikan dengan lembut dan sertakan sumber yang benar." }
+      ],
+      cerita: {
+        judul: "Pesan Berantai di Grup Kelas",
+        teks: [
+          "Pukul 22.00 masuk pesan: “WASPADA!!! Besok air PAM di Kepohbaru tercemar, jangan diminum! SEBARKAN SEGERA!!!” Tidak ada nama lembaga dan tidak ada tautan berita.",
+          "Beberapa teman langsung meneruskannya ke grup keluarga. Grup menjadi panik dan ada yang ikut membagikan video lama yang tidak jelas asalnya."
+        ],
+        tanya: "Apa yang seharusnya dilakukan sebelum ikut meneruskan pesan tersebut?"
+      },
+      aktivitas: "chat",
+      refleksi: "Tuliskan kalimat santun yang akan kamu kirim untuk mengingatkan teman yang membagikan kabar yang belum jelas.",
+      kuis: [
+        { q: "Tabayyun dalam QS. Al-Hujurat ayat 6 berarti ....", o: ["segera membagikan berita agar orang lain waspada", "memeriksa kebenaran kabar sebelum mempercayai dan menyebarkannya", "mengabaikan semua berita", "hanya percaya berita yang paling banyak dibagikan"], a: 1, w: "Fatabayyanū berarti telitilah kebenarannya, agar kita tidak mencelakakan orang lain karena ketidaktahuan." },
+        { q: "Ciri pesan berantai yang perlu dicurigai adalah ....", o: ["mencantumkan sumber resmi dan tanggal", "tidak jelas sumbernya dan memaksa “sebarkan segera”", "dibagikan oleh guru", "ditulis dengan bahasa baku"], a: 1, w: "Pesan tanpa sumber yang mendesak orang untuk segera menyebarkan adalah tanda kuat bahwa kabar itu perlu dicek." },
+        { q: "Cara yang tepat mengingatkan teman yang menyebarkan kabar keliru adalah ....", o: ["mempermalukannya di grup", "mengirim pesan pribadi dengan santun sambil menyertakan sumber yang benar", "diam saja agar tidak ribut", "ikut menyebarkan supaya adil"], a: 1, w: "Saling menasihati dalam kebenaran dilakukan dengan santun dan disertai bukti, bukan dengan mempermalukan." }
+      ]
+    },
+
+    /* ======================= BAGIAN 5 ======================= */
+    {
+      no: 5, slug: "kesabaran", ikon: "🤝", judul: "Saling Menguatkan", sub: "Saling menasihati dalam kesabaran",
+      pertemuan: 4,
+      tujuan: "Kamu dapat menjelaskan cara saling menguatkan teman agar mampu menahan dorongan menggulir secara berlebihan.",
+      pemantik: "Kalau temanmu bilang, “Aku nggak bisa berhenti scroll,” apa yang biasanya kamu katakan?",
+      dalil: [
+        { tipe: "ayat", arab: "وَتَوَاصَوْا بِالصَّبْرِ", arti: "...dan saling menasihati untuk kesabaran.", sumber: "QS. Al-‘Ashr [103]: 3 (penggalan)" }
+      ],
+      materi: [
+        { h: "Sabar itu aktif", p: "Sabar bukan hanya pasrah. Sabar mencakup menahan diri dari hal yang merugikan, tetap teguh dalam kebaikan, dan tegar menghadapi ujian. Menahan dorongan untuk terus menggulir adalah salah satu bentuk sabar yang nyata di zaman ini." },
+        { h: "Kata kuncinya: saling", p: "Al-‘Ashr tidak berkata “bersabarlah sendiri-sendiri”, tetapi <em>tawāṣau</em>, yaitu saling menasihati. Kebiasaan lebih mudah diubah bersama teman. Kamu bisa menjadi pengingat bagi temanmu, dan temanmu bisa menjadi pengingat bagimu." },
+        { h: "Langkah kecil yang bisa dicoba", list: ["Pasang niat sebelum membuka aplikasi: “Aku buka untuk apa?”", "Tentukan batas waktu dan pakai pengingat di ponsel.", "Matikan putar otomatis dan notifikasi yang tidak penting.", "Jauhkan ponsel saat belajar dan sebelum tidur.", "Siapkan kegiatan pengganti: membaca, berolahraga, mengobrol dengan keluarga, berzikir.", "Buat kesepakatan saling mengingatkan dengan teman."] },
+        { h: "Saat rasa cemas terasa berat", p: "Bila kabar buruk membuatmu terus cemas, sulit tidur, atau sedih berhari-hari, itu bukan tanda kamu lemah. Ceritakan kepada orang tua, wali kelas, atau guru BK. Meminta bantuan juga bagian dari saling menguatkan." }
+      ],
+      cerita: {
+        judul: "Pesan dari Rani",
+        teks: [
+          "Rani mengirim pesan malam-malam: “Aku dari tadi lihat video gempa terus. Jadi takut tidur, tapi nggak bisa berhenti.”",
+          "Bagaimana kamu akan membalasnya? Coba aktivitas di bawah ini."
+        ],
+        tanya: "Apa bedanya menasihati dengan menghakimi?"
+      },
+      aktivitas: "balas",
+      refleksi: "Siapa satu teman yang ingin kamu ajak saling mengingatkan? Kesepakatan apa yang akan kalian buat?",
+      kuis: [
+        { q: "Makna tawāṣau biṣ-ṣabr adalah ....", o: ["bersabar sendirian tanpa bantuan", "saling menasihati untuk kesabaran", "menunggu tanpa berbuat apa-apa", "membalas setiap komentar"], a: 1, w: "Tawāṣau menunjukkan kegiatan bersama: saling mengingatkan dan menguatkan dalam kesabaran." },
+        { q: "Langkah yang paling membantu menahan dorongan menggulir berlebihan adalah ....", o: ["menyalakan putar otomatis", "memasang niat dan batas waktu sebelum membuka aplikasi", "membuka aplikasi setiap ada notifikasi", "membawa ponsel ke tempat tidur"], a: 1, w: "Niat dan batas waktu memberi titik berhenti yang tidak disediakan oleh desain aplikasi." },
+        { q: "Teman bercerita bahwa ia cemas karena terus melihat berita bencana. Respons terbaik adalah ....", o: ["“Ah, lebay kamu.”", "Mendengarkan, mengajak rehat dari layar, dan menyarankan bercerita kepada orang tua atau guru BK bila cemasnya berlanjut", "Mengirim lebih banyak video bencana", "Tidak membalas pesannya"], a: 1, w: "Saling menguatkan dimulai dengan mendengarkan tanpa menghakimi, mengajak langkah kecil yang sehat, dan menghubungkan dengan orang dewasa tepercaya." }
+      ]
+    }
+  ],
+
+  /* ---------- aktivitas ---------- */
+  sortir: [
+    { t: "Menonton kajian daring lalu merangkumnya untuk teman", k: "baik", w: "Belajar dan berbagi ilmu adalah amal saleh." },
+    { t: "Mengulang potongan video perkelahian sampai pukul 01.00", k: "sia", w: "Tidak bermanfaat, menguras perasaan, dan mengorbankan tidur." },
+    { t: "Mengecek info resmi sekolah tentang jadwal ujian", k: "baik", w: "Mencari informasi yang dibutuhkan dengan tujuan jelas." },
+    { t: "Ikut berdebat kasar di kolom komentar berita", k: "sia", w: "Memancing emosi dan bisa melukai orang lain." },
+    { t: "Membuat video tutorial sederhana untuk adik kelas", k: "baik", w: "Berkarya yang bermanfaat bagi orang lain." },
+    { t: "Terus menggulir berita bencana padahal sudah membuat cemas", k: "sia", w: "Mengetahui kabar itu penting, tetapi menggulir terus-menerus tidak menambah manfaat dan justru menguras diri. Mendoakan atau membantu lebih bermakna." },
+    { t: "Mengirim ucapan semangat kepada teman yang sedang sakit", k: "baik", w: "Menyambung silaturahmi dan menguatkan teman." },
+    { t: "Membandingkan diri dengan unggahan teman sampai merasa minder", k: "sia", w: "Tidak membawa manfaat dan menguras rasa syukur." }
+  ],
+
+  skenario: {
+    mulai: "a",
+    langkah: {
+      a: { t: "Pukul 22.15. Kamu sudah selesai belajar dan berniat membuka ponsel sebentar. Di beranda muncul video kecelakaan yang sedang ramai.", p: [
+        { l: "Tonton, lalu lanjut ke video berikutnya", ke: "b" },
+        { l: "Lewati, cek pesan penting, lalu tutup aplikasi", ke: "selesaiBaik" } ] },
+      b: { t: "Sudah 40 menit berlalu. Kamu kini membaca komentar-komentar yang saling menyalahkan. Hatimu terasa tidak nyaman.", p: [
+        { l: "“Sebentar lagi, tanggung.”", ke: "c" },
+        { l: "Ingat bahwa umur akan ditanya untuk apa dihabiskan, lalu berhenti", ke: "selesaiSadar" } ] },
+      c: { t: "Pukul 00.10. Matamu perih, tetapi kamu belum mengantuk karena masih gelisah. Besok ada ulangan.", p: [
+        { l: "Taruh ponsel jauh-jauh, beristigfar, dan coba tidur", ke: "selesaiBangkit" },
+        { l: "Buka aplikasi lain", ke: "selesaiRugi" } ] }
+    },
+    akhir: {
+      selesaiBaik: { j: "Keputusan tepat sejak awal", t: "Kamu memegang kendali dari awal. Niat yang jelas membuat waktu tetap terjaga. Inilah buah kesadaran iman.", ok: true },
+      selesaiSadar: { j: "Rem dari dalam bekerja", t: "Kesadaran bahwa waktu adalah titipan membuatmu berhenti. Berhenti di tengah jalan tetap lebih baik daripada terus terseret.", ok: true },
+      selesaiBangkit: { j: "Tidak pernah terlambat untuk kembali", t: "Waktu yang sudah lewat memang tidak kembali, tetapi kamu bisa memperbaiki sisa malammu. Besok, coba pasang niat dan batas waktu sebelum membuka ponsel.", ok: true },
+      selesaiRugi: { j: "Modal waktu terus terkuras", t: "Inilah gambaran khusr: modal habis tanpa terasa. Coba ulangi skenario ini dan cari titik ketika kamu bisa berhenti.", ok: false }
+    }
+  },
+
+  chat: {
+    pesan: "⚠️ WASPADA!!! Besok air PAM di Kepohbaru TERCEMAR zat berbahaya, JANGAN diminum!! Info dari orang dalam. SEBARKAN SEGERA ke semua grup!!!",
+    pilihan: [
+      { l: "Langsung teruskan ke grup keluarga", ok: false, w: "Kabar tanpa sumber bisa menimbulkan kepanikan. Jika ternyata keliru, kita ikut bertanggung jawab. Ingat QS. Al-Hujurat ayat 6." },
+      { l: "Cek dulu: cari berita resmi dari pemerintah daerah atau PDAM", ok: true, w: "Tepat! Inilah tabayyun. Pesan itu tidak menyebut lembaga resmi dan memaksa untuk segera disebarkan. Keduanya adalah tanda bahaya." },
+      { l: "Abaikan saja dan tidak peduli", ok: false, w: "Tidak ikut menyebarkan memang baik, tetapi saling menasihati dalam kebenaran juga berarti peduli: cek kebenarannya dan ingatkan teman bila keliru." }
+    ],
+    balasan: [
+      { l: "“Woy hoaks nih! Kalian gampang banget dibohongin 🤣”", ok: false, w: "Benar isinya, tetapi caranya mempermalukan. Nasihat seperti ini mudah ditolak." },
+      { l: "“Teman-teman, aku cek belum ada info resmi dari PDAM/pemda. Yuk tunggu sumber resmi dulu sebelum disebar 🙏”", ok: true, w: "Santun, jelas, dan mengajak tabayyun bersama. Inilah saling menasihati dalam kebenaran." },
+      { l: "(Tidak membalas, tapi ikut membagikan video lama)", ok: false, w: "Menambah kebingungan. Video lama tanpa keterangan juga perlu dicek." }
+    ]
+  },
+
+  balas: {
+    pesan: "Aku dari tadi lihat video gempa terus. Jadi takut tidur, tapi nggak bisa berhenti 😟",
+    pilihan: [
+      { l: "“Ya udah sih, matiin aja. Gitu doang kok susah.”", ok: false, w: "Maksudnya baik, tetapi terdengar meremehkan. Orang yang sedang cemas butuh didengar lebih dulu." },
+      { l: "“Wajar kok kamu jadi takut. Yuk taruh HP sebentar, doakan yang kena musibah, terus coba tidur. Kalau besok masih kepikiran, cerita ke ibumu atau Bu BK, ya. Aku juga mau ngurangin scroll malam, kita saling ingetin yuk 🤝”", ok: true, w: "Mendengarkan, mengajak langkah kecil yang sehat, menghubungkan dengan orang dewasa tepercaya, dan mengajak saling mengingatkan. Inilah tawāṣau biṣ-ṣabr." },
+      { l: "“Aku kirimin video gempa yang lebih parah ya.”", ok: false, w: "Justru menambah paparan konten yang membuat cemas." }
+    ]
+  },
+
+  rencana: [
+    "Memasang niat sebelum membuka media sosial",
+    "Membatasi media sosial di malam hari dengan pengingat waktu",
+    "Mematikan putar otomatis dan notifikasi yang tidak penting",
+    "Menaruh ponsel jauh dari tempat tidur",
+    "Mengecek sumber sebelum membagikan kabar",
+    "Mengganti 15 menit menggulir dengan membaca atau mengaji",
+    "Saling mengingatkan dengan satu teman",
+    "Bermuhasabah singkat sebelum tidur"
+  ],
+
+  kuisAkhir: [
+    { q: "Menurut QS. Al-‘Ashr, orang yang tidak merugi adalah orang yang ....", o: ["kaya dan terkenal", "beriman, beramal saleh, serta saling menasihati dalam kebenaran dan kesabaran", "rajin bermedia sosial", "tidak pernah memakai teknologi"], a: 1, w: "Ayat 3 menyebut empat hal: iman, amal saleh, saling menasihati dalam kebenaran, dan saling menasihati dalam kesabaran." },
+    { q: "Doomscrolling paling tepat diartikan sebagai ....", o: ["menggulir konten negatif secara berlebihan meskipun membuat sedih atau cemas", "membaca berita di koran", "menonton video belajar", "mengirim pesan kepada teman"], a: 0, w: "Doomscrolling adalah kebiasaan berlebihan menelusuri konten yang tidak menyenangkan, padahal konten itu menurunkan semangat." },
+    { q: "Salah satu alasan konten negatif sulit dilewatkan adalah ....", o: ["konten negatif selalu benar", "manusia cenderung memberi perhatian lebih pada informasi negatif dan aplikasi dirancang tanpa titik berhenti", "konten positif dilarang", "ponsel rusak"], a: 1, w: "Bias negativitas dan desain guliran tak berujung membuat kita mudah terseret. Karena itu, perlu rem dari dalam diri." },
+    { q: "Menerapkan nilai waktu dalam bermedia berarti ....", o: ["tidak pernah membuka media sosial", "menyadari berapa lama waktu terpakai dan apa yang tergeser olehnya", "menggulir secepat mungkin", "menunggu sampai bosan"], a: 1, w: "Nilai waktu menuntut kesadaran: berapa lama, dan apa yang dikorbankan (tidur, belajar, ibadah)." },
+    { q: "Contoh penerapan nilai iman ketika menggulir konten negatif adalah ....", o: ["berhenti karena sadar waktu akan dimintai pertanggungjawaban", "lanjut karena penasaran", "berhenti hanya karena kuota habis", "membagikannya agar viral"], a: 0, w: "Iman menumbuhkan kesadaran bahwa waktu adalah titipan yang akan ditanya." },
+    { q: "Kegiatan berikut yang cenderung tergolong sia-sia adalah ....", o: ["mengikuti kelas daring gratis", "mengulang potongan video perkelahian hingga lewat tengah malam", "membagikan info resmi sekolah", "menyemangati teman lewat pesan"], a: 1, w: "Konten yang tidak bermanfaat dan diulang sampai mengorbankan tidur termasuk laghw." },
+    { q: "Kamu menerima video “kejadian terbaru” tanpa keterangan. Tindakan yang sesuai tabayyun adalah ....", o: ["langsung membagikannya", "mengecek sumber, tanggal, dan berita resmi terlebih dahulu", "menambahkan komentar sendiri lalu membagikannya", "memercayainya karena banyak yang menonton"], a: 1, w: "Tabayyun: periksa sumber, waktu, dan bandingkan dengan informasi resmi sebelum percaya atau membagikan." },
+    { q: "Bentuk saling menasihati dalam kesabaran yang tepat adalah ....", o: ["menertawakan teman yang sulit berhenti", "saling mengingatkan dengan lembut dan menguatkan untuk menahan dorongan", "membiarkan teman tanpa peduli", "melaporkan teman ke grup kelas"], a: 1, w: "Tawāṣau biṣ-ṣabr dilakukan bersama, dengan cara lembut dan saling menguatkan." },
+    { q: "Sikap QS. Al-‘Ashr terhadap media sosial dapat disimpulkan sebagai ....", o: ["melarang sepenuhnya", "tidak melarang, tetapi mengarahkan agar waktu dipakai untuk iman dan amal saleh", "membebaskan tanpa batas", "tidak ada kaitannya sama sekali"], a: 1, w: "Yang dipersoalkan bukan media sosialnya, melainkan waktu yang habis tanpa manfaat." },
+    { q: "Imam Syafi’i disebutkan berpendapat bahwa Surah Al-‘Ashr ....", o: ["hanya untuk orang tua", "cukup menjadi pedoman hidup bila direnungkan dengan sungguh-sungguh", "khusus dibaca sore hari", "hanya berisi kisah umat terdahulu"], a: 1, w: "Surah yang pendek ini memuat ringkasan jalan keselamatan manusia sehingga dinilai cukup menjadi pedoman bila direnungkan." }
+  ],
+
+  /* ---------- info umum ---------- */
+  mapel: { nama: "Pendidikan Agama Islam dan Budi Pekerti", kelas: "Kelas XI (Fase F)", elemen: "Al-Qur’an Hadis dan Akhlak" },
+  tujuanUmum: [
+    "Menjelaskan makna waktu dan kerugian manusia menurut QS. Al-‘Ashr.",
+    "Menafsirkan hubungan iman dengan kesadaran akan pertanggungjawaban waktu.",
+    "Membedakan penggunaan media sosial yang bernilai amal saleh dari yang sia-sia.",
+    "Menyimpulkan sikap tabayyun ketika menerima kabar negatif.",
+    "Menjelaskan cara saling menguatkan untuk menahan dorongan menggulir berlebihan."
+  ],
+  terbaru: [
+    { tgl: "2026-11-26", judul: "Glosarium istilah penting", link: "#glosarium", ket: "18 istilah dari Al-‘Ashr sampai doomscrolling" },
+    { tgl: "2026-11-26", judul: "Unduhan PDF: ringkasan materi dan lembar kerja", link: "#unduhan", ket: "Bisa dicetak untuk belajar di rumah" },
+    { tgl: "2026-11-26", judul: "Bagian 5: Saling Menguatkan", link: "#bagian-5", ket: "Aktivitas baru: balas pesan Rani" }
+  ],
+
+  ringkasan: {
+    1: ["Allah bersumpah demi waktu karena waktu menentukan untung-rugi hidup manusia.", "Waktu itu netral. Pilihan amal kitalah yang membuatnya bernilai atau terbuang.", "Khusr berarti kehilangan modal berupa umur dan waktu.", "Banyak orang tertipu (maghbūn) dalam nikmat waktu luang tanpa menyadarinya."],
+    2: ["Iman adalah golongan pertama yang selamat dari kerugian.", "Umur akan ditanya untuk apa dihabiskan (HR. at-Tirmidzi no. 2417).", "Kesadaran ini menjadi rem dari dalam diri saat jempol sulit berhenti.", "Muhasabah (QS. Al-Hasyr: 18): menilai diri sebelum tidur."],
+    3: ["Amal saleh adalah kebaikan nyata yang bermanfaat.", "Media sosial bisa menjadi ladang amal: belajar, berbagi info benar, menyemangati teman.", "Orang beriman menjauhi laghw, yaitu hal yang tidak berguna (QS. Al-Mu’minun: 3).", "Ukur kebiasaan bermedia dari manfaat, kewajiban yang tergeser, dan perasaan sesudahnya."],
+    4: ["Tawāṣau bil-ḥaqq: saling menasihati dalam kebenaran.", "Tabayyun (QS. Al-Hujurat: 6): cek kebenaran sebelum percaya dan membagikan.", "Lima langkah: tahan jempol, cek sumber, cek tanggal/tempat, bandingkan berita resmi, ingatkan dengan santun.", "Menasihati tanpa mempermalukan."],
+    5: ["Sabar itu aktif: menahan diri, teguh dalam kebaikan, dan tegar menghadapi ujian.", "Kata kuncinya “saling”: kebiasaan lebih mudah diubah bersama teman.", "Langkah kecil: niat, batas waktu, matikan putar otomatis, jauhkan ponsel saat tidur.", "Jika cemas terasa berat, ceritakan kepada orang tua atau guru BK."]
+  },
+
+  diagram: {
+    1: { judul: "Ke mana 24 jammu pergi?", tipe: "bar", data: [["Tidur", 8, "#7b6cf6"], ["Sekolah", 7, "#3a97e0"], ["Ibadah & makan", 2, "#26a98f"], ["Belajar di rumah", 2, "#f07f4f"], ["Menggulir layar", 3, "#e0527c"], ["Lainnya", 2, "#c9bfd6"]], ket: "Contoh pembagian waktu seorang siswa. Setiap jam di layar diambil dari jatah kegiatan lain." },
+    2: { judul: "Rem iman saat menggulir", tipe: "alur", data: ["📱 Muncul konten negatif", "😣 Dorongan terus menonton", "💡 Ingat: umurku akan ditanya", "✋ Berhenti & beralih ke yang bermanfaat"], ket: "Iman bekerja sebagai rem dari dalam diri di antara dorongan dan tindakan." },
+    3: { judul: "Tiga pertanyaan penyaring", tipe: "saring", data: ["Apakah ini bermanfaat?", "Apakah ini menggeser kewajibanku?", "Bagaimana perasaanku sesudahnya?"], hasil: ["🌱 Amal saleh", "🍂 Cenderung sia-sia"], ket: "Gunakan tiga pertanyaan ini sebelum dan sesudah membuka media sosial." },
+    4: { judul: "Lima langkah tabayyun", tipe: "alur", data: ["✋ Tahan jempol", "🔎 Cek sumber", "📅 Cek tanggal & tempat", "📰 Bandingkan berita resmi", "💬 Ingatkan dengan santun"], ket: "Lakukan berurutan setiap menerima kabar yang membuat panik." },
+    5: { judul: "Lingkaran saling menguatkan", tipe: "lingkar", data: ["Aku mengingatkan temanku", "Temanku menahan diri", "Temanku mengingatkanku", "Aku menahan diri"], ket: "Tawāṣau biṣ-ṣabr: kesabaran tumbuh saat dijalani bersama." }
+  },
+
+  glosarium: [
+    ["Al-‘Ashr", "Masa atau waktu. Nama surah ke-103 yang dibuka dengan sumpah Allah demi waktu."],
+    ["Khusr", "Kerugian. Dalam tafsir digambarkan seperti hilangnya modal berupa umur dan waktu."],
+    ["Maghbūn", "Orang yang tertipu atau dirugikan tanpa menyadarinya (hadis dua nikmat)."],
+    ["Iman", "Keyakinan dalam hati yang tampak dalam ucapan dan perbuatan."],
+    ["Amal saleh", "Perbuatan baik yang nyata dan bermanfaat bagi diri sendiri dan orang lain."],
+    ["Laghw", "Perkataan atau perbuatan yang tidak berguna dan sia-sia."],
+    ["Tawāṣau bil-ḥaqq", "Saling menasihati dalam kebenaran."],
+    ["Tawāṣau biṣ-ṣabr", "Saling menasihati dalam kesabaran."],
+    ["Tabayyun", "Memeriksa kebenaran suatu kabar sebelum mempercayai atau menyebarkannya (QS. Al-Hujurat: 6)."],
+    ["Muhasabah", "Menghitung dan menilai diri sendiri atas apa yang sudah dilakukan."],
+    ["Sabar", "Menahan diri dari hal yang merugikan, teguh dalam kebaikan, dan tegar menghadapi ujian."],
+    ["Amanah", "Titipan yang harus dijaga dan dipertanggungjawabkan, termasuk waktu dan umur."],
+    ["Mufasir", "Ulama ahli tafsir Al-Qur’an, misalnya Quraish Shihab dan Ibnu Katsir."],
+    ["Doomscrolling", "Kebiasaan menggulir konten negatif secara berlebihan meskipun membuat sedih atau cemas."],
+    ["Bias negativitas", "Kecenderungan manusia memberi perhatian lebih besar pada informasi negatif."],
+    ["Algoritma", "Aturan otomatis aplikasi yang memilih konten berikutnya untuk ditampilkan kepadamu."],
+    ["Guliran tak berujung", "Desain aplikasi (infinite scroll) yang terus memuat konten sehingga tidak ada titik berhenti."],
+    ["Hoaks", "Kabar bohong atau menyesatkan yang disebarkan seolah-olah benar."]
+  ],
+
+  unduhan: [
+    { file: "ringkasan-materi-al-ashr.pdf", judul: "Ringkasan Materi", ket: "Ayat, poin penting tiap bagian, dan glosarium dalam satu berkas.", ikon: "📘" },
+    { file: "lembar-kerja-siswa.pdf", judul: "Lembar Kerja Siswa", ket: "Refleksi, pilah kartu, langkah tabayyun, dan Rencana Kecilku untuk dicetak.", ikon: "📝" }
+  ],
+
+  faq: [
+    ["Apakah bermain media sosial itu dosa?", "Tidak. Media sosial adalah alat. Yang dinilai adalah cara memakainya: bermanfaat atau sia-sia, menggeser kewajiban atau tidak, dan dampaknya bagi diri sendiri dan orang lain."],
+    ["Bagaimana kalau aku sudah terlanjur sering doomscrolling?", "Tidak ada kata terlambat. Mulai dari langkah kecil seperti memasang niat dan batas waktu, lalu ajak teman saling mengingatkan. Lihat Bagian 5 dan Rencana Kecilku."],
+    ["Mengetahui berita bencana kan penting?", "Benar. Mengetahui kabar penting itu baik. Yang perlu dihindari adalah menggulirnya terus-menerus sampai cemas dan mengorbankan tidur. Cukup ketahui intinya, doakan, dan bantu bila bisa."],
+    ["Apakah jawaban refleksiku dibaca guru?", "Tidak. Jawaban refleksi hanya tersimpan di perangkatmu sendiri. Kamu boleh membagikannya bila mau."],
+    ["Mengapa yang dipakai Surah Al-‘Ashr?", "Surah ini pendek tetapi memuat empat kunci selamat dari kerugian: iman, amal saleh, saling menasihati dalam kebenaran, dan saling menasihati dalam kesabaran. Semuanya berkaitan dengan cara kita memakai waktu."]
+  ],
+
+  /* ---------- profil pengembang ---------- */
+  pengembang: {
+    nama: "Kiromim Baroroh",
+    peran: "Pengembang media pembelajaran",
+    kampus: "Sekolah Tinggi Ilmu Tarbiyah (STIT) Muhammadiyah Bojonegoro",
+    bio: "Website ini dikembangkan sebagai produk penelitian skripsi untuk membantu siswa memahami nilai-nilai QS. Al-‘Ashr dan mengaitkannya dengan kebiasaan bermedia sehari-hari, terutama dalam mengendalikan doomscrolling.",
+    fakta: [
+      ["🎓", "Perguruan tinggi", "STIT Muhammadiyah Bojonegoro"],
+      ["📖", "Judul penelitian", "Penguatan Pemahaman Nilai Al-‘Ashr dalam Pengendalian Doomscrolling pada Siswa SMAN 1 Kepohbaru melalui Media Website Interaktif"],
+      ["🏫", "Sekolah mitra", "SMAN 1 Kepohbaru, Bojonegoro"],
+      ["🛠️", "Model pengembangan", "ADDIE (Analyze, Design, Develop, Implement, Evaluate)"]
+    ],
+    terimakasih: "Terima kasih kepada dosen pembimbing, para validator ahli materi PAI dan ahli media, guru PAI dan guru BK, serta siswa SMAN 1 Kepohbaru yang telah membantu pengembangan media ini."
+  },
+
+  /* ---------- halaman guru ---------- */
+  guru: {
+    pertemuan: [
+      { no: 1, fokus: "Nilai waktu dan kerugian manusia", bagian: [1], tujuan: "Siswa dapat menjelaskan makna waktu dan alasan manusia berada dalam kerugian menurut QS. Al-‘Ashr ayat 1–2.", kegiatan: ["Pembukaan dan pretest (di kertas, di luar website)", "Pertanyaan pemantik: ke mana waktu malam kita pergi?", "Menyimak ayat, terjemah, dan tafsir ringkas di Bagian 1", "Diskusi cerita “Malam Fajar” dan kalkulator waktu", "Kuis Bagian 1 dan penguatan oleh guru"] },
+      { no: 2, fokus: "Iman dan amal saleh", bagian: [2, 3], tujuan: "Siswa dapat menafsirkan hubungan iman dengan kesadaran waktu dan membedakan penggunaan media yang bernilai amal saleh dari yang sia-sia.", kegiatan: ["Apersepsi dari pertemuan 1", "Bagian 2: telaah hadis at-Tirmidzi dan skenario “Malam di Depan Layar” secara berpasangan", "Bagian 3: kegiatan memilah kartu aktivitas", "Diskusi: kapan konten yang sama bisa bermanfaat atau sia-sia?", "Kuis Bagian 2 dan 3"] },
+      { no: 3, fokus: "Saling menasihati dalam kebenaran", bagian: [4], tujuan: "Siswa dapat menyimpulkan tindakan yang tepat saat menerima kabar negatif, merujuk pada tabayyun.", kegiatan: ["Pemantik: pengalaman menerima hoaks", "Telaah QS. Al-Hujurat ayat 6", "Simulasi pesan berantai di website", "Latihan menyusun balasan yang santun", "Kuis Bagian 4"] },
+      { no: 4, fokus: "Saling menasihati dalam kesabaran dan penguatan", bagian: [5], tujuan: "Siswa dapat menjelaskan cara saling menguatkan teman dan merangkum hubungan empat pilar Al-‘Ashr.", kegiatan: ["Bagian 5 dan aktivitas “Balas Pesan Rani”", "Rangkuman empat pilar dan “Rencana Kecilku”", "Kuis akhir di website (latihan)", "Refleksi tertulis, posttest (di kertas), dan angket respons"] }
+    ],
+    catatan: [
+      "Guru PAI memegang peran utama: membuka, memandu diskusi, dan memberi penguatan keislaman. Website hanya menyediakan materi, kasus, dan kuis.",
+      "Kuis di website adalah latihan dan tidak sama dengan soal pretest/posttest.",
+      "Jangan meminta siswa membacakan refleksi pribadinya di depan kelas. Jawaban refleksi hanya tersimpan di perangkat masing-masing siswa.",
+      "Bila ada siswa yang tampak tertekan atau sangat cemas, serahkan pendampingannya kepada guru BK.",
+      "Isi keislaman (teks Arab, terjemah, tafsir, dan hadis) telah disiapkan untuk ditelaah ahli materi PAI sebelum uji coba."
+    ]
+  }
+};
+
+</script>
+<script>
+(function () {
+  "use strict";
+  var C = window.CONTENT, CFG = window.SITE_CONFIG || {};
+  var app = document.getElementById("app");
+  var KEY = "demimasa-v1";
+
+  /* ---------- penyimpanan lokal (aman bila tidak tersedia) ---------- */
+  var mem = {};
+  function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return mem; } }
+  function save(s) { mem = s; try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) {} }
+  var S = load(); S.done = S.done || {}; S.refl = S.refl || {}; S.quiz = S.quiz || {}; S.plan = S.plan || []; S.opened = S.opened || {}; S.quizLast = S.quizLast || {};
+
+  function esc(t) { return String(t).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function h(html) { var d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstChild; }
+  function $(sel, el) { return (el || document).querySelector(sel); }
+  function $$(sel, el) { return Array.prototype.slice.call((el || document).querySelectorAll(sel)); }
+
+  /* ---------- top bar ---------- */
+  var drawer = $("#drawer"), menuBtn = $("#menuBtn");
+  menuBtn.addEventListener("click", function () {
+    var open = drawer.hidden; drawer.hidden = !open; menuBtn.setAttribute("aria-expanded", String(open));
+  });
+  document.addEventListener("click", function (e) {
+    if (!drawer.hidden && !drawer.contains(e.target) && e.target !== menuBtn) { drawer.hidden = true; menuBtn.setAttribute("aria-expanded", "false"); }
+  });
+  $("#drawerParts").innerHTML = C.bagian.map(function (b) {
+    return '<a href="#bagian-' + b.no + '">' + b.ikon + " " + b.no + ". " + esc(b.judul) + "</a>";
+  }).join("");
+  $("#footSchool").textContent = CFG.sekolah || "";
+  function updChip() { $("#progChip").textContent = Object.keys(S.done).length + "/5 selesai"; }
+
+  /* ---------- komponen ---------- */
+  function dalilCard(d) {
+    return '<div class="card surah dalil"><span class="tag">' + (d.tipe === "ayat" ? "Ayat Al-Qur’an" : "Hadis") + '</span>' +
+      '<div class="ar" lang="ar">' + d.arab + "</div>" +
+      (d.latin ? '<p class="latin">' + esc(d.latin) + "</p>" : "") +
+      '<p class="arti">“' + esc(d.arti) + '”</p><span class="src">' + esc(d.sumber) + "</span></div>";
+  }
+
+  function quizBlock(list, id) {
+    var wrap = h('<div class="quiz"></div>');
+    var answered = 0, right = 0;
+    var scoreEl = h('<p class="score" aria-live="polite"></p>');
+    list.forEach(function (it, qi) {
+      var q = h('<div class="q"><p class="qt">' + (qi + 1) + ". " + esc(it.q) + "</p></div>");
+      it.o.forEach(function (op, oi) {
+        var b = h('<button class="opt" type="button">' + String.fromCharCode(65 + oi) + ". " + esc(op) + "</button>");
+        b.addEventListener("click", function () {
+          $$(".opt", q).forEach(function (x, xi) { x.disabled = true; if (xi === it.a) x.classList.add("right"); });
+          var ok = oi === it.a; if (!ok) b.classList.add("wrong");
+          q.appendChild(h('<div class="fb ' + (ok ? "ok" : "no") + '"><b>' + (ok ? "Tepat! " : "Belum tepat. ") + "</b>" + esc(it.w) + "</div>"));
+          answered++; if (ok) right++;
+          if (answered === list.length) {
+            scoreEl.textContent = "Skormu: " + right + " dari " + list.length + (right === list.length ? " — luar biasa! 🌟" : ". Baca lagi penjelasannya, lalu coba ulang bila perlu.");
+            S.quiz[id] = Math.max(S.quiz[id] || 0, right); S.quizLast[id] = right; save(S);
+            var again = h('<button class="btn btn-ghost" type="button">Ulangi kuis</button>');
+            again.addEventListener("click", function () { var n = quizBlock(list, id); wrap.replaceWith(n); });
+            wrap.appendChild(again);
+          }
+        });
+        q.appendChild(b);
+      });
+      wrap.appendChild(q);
+    });
+    wrap.appendChild(scoreEl);
+    return wrap;
+  }
+
+  function videoBlock(no) {
+    var v = (CFG.VIDEOS || {})[no] || {};
+    if (v.id) {
+      return '<div class="video"><iframe src="https://www.youtube-nocookie.com/embed/' + encodeURIComponent(v.id) +
+        '" title="' + esc(v.judul || "Video") + '" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>' +
+        '<p class="small muted">' + esc(v.judul || "") + "</p>";
+    }
+    return '<div class="video-ph"><div><div class="play">▶</div><b>' + esc(v.judul || "Video pembelajaran") + "</b>Video akan ditambahkan oleh guru. (Atur di <code>js/config.js</code>)</div></div>";
+  }
+
+
+  /* ---------- audio: bacakan teks (Text-to-Speech browser) ---------- */
+  var TTS = ("speechSynthesis" in window) && typeof SpeechSynthesisUtterance !== "undefined";
+  function stopSpeak() { if (TTS) try { speechSynthesis.cancel(); } catch (e) {} }
+  function speakBtn(getText, label) {
+    if (!TTS) return h('<p class="small muted">🔇 Browser ini belum mendukung fitur dengar.</p>');
+    var b = h('<button class="listen" type="button" aria-pressed="false"><span class="li">🔊</span> <span class="lt">' + esc(label || "Dengarkan penjelasan") + "</span></button>"), on = false;
+    b.onclick = function () {
+      if (on) { stopSpeak(); return; }
+      stopSpeak();
+      var u = new SpeechSynthesisUtterance(getText()); u.lang = "id-ID"; u.rate = 0.95;
+      var v = speechSynthesis.getVoices().filter(function (x) { return /^id/i.test(x.lang); })[0]; if (v) u.voice = v;
+      u.onstart = function () { on = true; b.classList.add("on"); b.setAttribute("aria-pressed", "true"); $(".lt", b).textContent = "Berhenti"; $(".li", b).textContent = "⏹"; };
+      u.onend = u.onerror = function () { on = false; b.classList.remove("on"); b.setAttribute("aria-pressed", "false"); $(".lt", b).textContent = label || "Dengarkan penjelasan"; $(".li", b).textContent = "🔊"; };
+      try { speechSynthesis.speak(u); } catch (e) {}
+    };
+    return b;
+  }
+  function plain(html) { var d = document.createElement("div"); d.innerHTML = html; return d.textContent; }
+
+  /* ---------- diagram per bagian ---------- */
+  function diagram(no) {
+    var d = C.diagram[no]; if (!d) return "";
+    var body = "";
+    if (d.tipe === "bar") {
+      var tot = d.data.reduce(function (t, x) { return t + x[1]; }, 0);
+      body = '<div class="dg-bar">' + d.data.map(function (x) { return '<span style="flex:' + x[1] + ";background:" + x[2] + '" title="' + esc(x[0]) + '"></span>'; }).join("") + "</div>" +
+        '<ul class="dg-leg">' + d.data.map(function (x) { return '<li><i style="background:' + x[2] + '"></i>' + esc(x[0]) + " <b>" + x[1] + " jam</b></li>"; }).join("") + "</ul>" +
+        '<p class="small muted" style="margin:6px 0 0">Total ' + tot + " jam</p>";
+    } else if (d.tipe === "alur") {
+      body = '<ol class="dg-flow">' + d.data.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ol>";
+    } else if (d.tipe === "saring") {
+      body = '<div class="dg-filter"><div class="dg-in">📱 Kebiasaan bermedia</div>' + d.data.map(function (x, i) { return '<div class="dg-q"><b>' + (i + 1) + "</b>" + esc(x) + "</div>"; }).join("") +
+        '<div class="dg-out">' + d.hasil.map(function (x) { return "<span>" + esc(x) + "</span>"; }).join("") + "</div></div>";
+    } else if (d.tipe === "lingkar") {
+      body = '<div class="dg-ring">' + d.data.map(function (x, i) { return '<div class="dg-node n' + i + '">' + esc(x) + "</div>"; }).join("") + '<div class="dg-mid">🤝<br>saling</div></div>';
+    }
+    return '<div class="card diagram"><h3>' + esc(d.judul) + "</h3>" + body + '<p class="small muted" style="margin:10px 0 0">' + esc(d.ket) + "</p></div>";
+  }
+
+  function lastScoreLabel(id, max) {
+    if (S.quizLast[id] == null) return '<span class="badge">Belum dikerjakan</span>';
+    var s = S.quizLast[id], ok = s / max >= 0.67;
+    return '<span class="badge ' + (ok ? "done" : "warnb") + '">' + s + "/" + max + (ok ? " · bagus" : " · perlu diulang") + "</span>";
+  }
+
+  /* ---------- aktivitas ---------- */
+  var ACT = {
+    kalkulator: function () {
+      var el = h('<div class="act calc"><h3>Kalkulator “Modal Waktu”</h3><p class="muted small">Geser sesuai perkiraanmu sendiri. Tidak ada yang melihat angkamu.</p>' +
+        '<label for="mnt">Berapa menit sehari kamu menggulir konten yang bikin gelisah?</label><div class="val"><span id="mv">60</span> menit/hari</div>' +
+        '<input type="range" id="mnt" min="0" max="300" step="5" value="60">' +
+        '<div class="grid"><div><b id="w1"></b><span>jam/minggu</span></div><div><b id="w2"></b><span>jam/bulan</span></div><div><b id="w3"></b><span>hari penuh/tahun</span></div></div>' +
+        '<div class="eq" id="eq"></div></div>');
+      var r = $("#mnt", el);
+      function upd() {
+        var m = +r.value, wk = m * 7 / 60, mo = m * 30 / 60, yr = m * 365 / 60 / 24;
+        $("#mv", el).textContent = m; $("#w1", el).textContent = wk.toFixed(1); $("#w2", el).textContent = mo.toFixed(0); $("#w3", el).textContent = yr.toFixed(1);
+        var juz = Math.floor(m * 30 / 40), buku = Math.floor(m * 30 / 360);
+        $("#eq", el).innerHTML = m === 0 ? "Masyaallah, waktumu terjaga. Pertahankan!" :
+          "Dalam sebulan, waktu itu cukup untuk membaca sekitar <b>" + juz + " juz</b> Al-Qur’an (±40 menit per juz) atau menamatkan sekitar <b>" + buku + " buku</b> (±6 jam per buku). Waktu ini adalah <em>modal</em>. Kamu yang menentukan ke mana ia dibelanjakan.";
+      }
+      r.addEventListener("input", upd); upd(); return el;
+    },
+
+    skenario: function () {
+      var sk = C.skenario, el = h('<div class="act"><h3>Skenario: Malam di Depan Layar</h3><p class="muted small">Pilih langkahmu. Tidak ada nilai, cukup jujur pada diri sendiri.</p><div class="scene" aria-live="polite"></div></div>');
+      var sc = $(".scene", el), jam = { a: "22.15", b: "22.55", c: "00.10" };
+      function go(k) {
+        if (sk.langkah[k]) {
+          var s = sk.langkah[k];
+          sc.innerHTML = '<span class="clock">🕙 ' + jam[k] + "</span><p>" + esc(s.t) + "</p>";
+          s.p.forEach(function (p) { var b = h('<button class="choice" type="button">' + esc(p.l) + "</button>"); b.onclick = function () { go(p.ke); }; sc.appendChild(b); });
+        } else {
+          var e = sk.akhir[k];
+          sc.innerHTML = '<div class="end"><h4>' + (e.ok ? "✅ " : "⚠️ ") + esc(e.j) + "</h4><p>" + esc(e.t) + "</p></div>";
+          var b = h('<button class="choice" type="button">↺ Ulangi skenario</button>'); b.onclick = function () { go(sk.mulai); }; sc.appendChild(b);
+        }
+      }
+      go(sk.mulai); return el;
+    },
+
+    sortir: function () {
+      var el = h('<div class="act"><h3>Pilah Kartu: Amal Saleh atau Sia-sia?</h3><p class="muted small">Tentukan kategori setiap aktivitas bermedia berikut.</p><div class="list"></div><p class="score" aria-live="polite"></p></div>');
+      var list = $(".list", el), n = 0, ok = 0;
+      C.sortir.forEach(function (it) {
+        var box = h('<div class="sort-item"><p>' + esc(it.t) + '</p><div class="row"><button class="chip-btn" data-k="baik" type="button">🌱 Amal saleh</button><button class="chip-btn" data-k="sia" type="button">🍂 Cenderung sia-sia</button></div></div>');
+        $$(".chip-btn", box).forEach(function (b) {
+          b.onclick = function () {
+            var right = b.dataset.k === it.k;
+            $$(".chip-btn", box).forEach(function (x) { x.disabled = true; });
+            b.classList.add(right ? "sel-ok" : "sel-no");
+            box.appendChild(h('<div class="fb ' + (right ? "ok" : "no") + '">' + (right ? "Tepat. " : "Coba pikirkan lagi. ") + esc(it.w) + "</div>"));
+            n++; if (right) ok++;
+            if (n === C.sortir.length) $(".score", el).textContent = "Kamu memilah " + ok + " dari " + n + " kartu dengan tepat.";
+          };
+        });
+        list.appendChild(box);
+      });
+      return el;
+    },
+
+    chat: function () {
+      var c = C.chat;
+      var el = h('<div class="act"><h3>Simulasi: Pesan Berantai</h3><p class="muted small">Kamu baru saja menerima pesan ini di grup kelas.</p>' +
+        '<div class="phone"><div class="ph-top">👥 XI-3 Kompak</div><div class="bubble in"><span class="who">Andra</span><span class="fwd">↪ Diteruskan berkali-kali</span>' + esc(c.pesan) + '</div><div class="thread"></div></div><div class="ctrl"></div></div>');
+      var thread = $(".thread", el), ctrl = $(".ctrl", el);
+      function step(opts, title, after) {
+        ctrl.innerHTML = '<p style="font-weight:800;margin:16px 0 4px">' + title + "</p>";
+        opts.forEach(function (o) {
+          var b = h('<button class="opt" type="button">' + esc(o.l) + "</button>");
+          b.onclick = function () {
+            $$(".opt", ctrl).forEach(function (x) { x.disabled = true; });
+            b.classList.add(o.ok ? "right" : "wrong");
+            ctrl.appendChild(h('<div class="fb ' + (o.ok ? "ok" : "no") + '">' + esc(o.w) + "</div>"));
+            if (o.ok) { var nb = h('<button class="btn btn-dark" type="button" style="margin-top:12px">Lanjut →</button>'); nb.onclick = after; ctrl.appendChild(nb); }
+            else { var rb = h('<button class="btn btn-ghost" type="button" style="margin-top:12px">Coba pilihan lain</button>'); rb.onclick = function () { step(opts, title, after); }; ctrl.appendChild(rb); }
+          };
+          ctrl.appendChild(b);
+        });
+      }
+      step(c.pilihan, "1) Apa yang kamu lakukan pertama kali?", function () {
+        thread.appendChild(h('<div class="bubble out">🔎 (Kamu mengecek situs resmi pemda & PDAM: tidak ada pengumuman apa pun.)</div>'));
+        step(c.balasan, "2) Pilih balasan yang akan kamu kirim ke grup:", function () {
+          var good = c.balasan.filter(function (x) { return x.ok; })[0];
+          thread.appendChild(h('<div class="bubble out">' + esc(good.l.replace(/^“|”$/g, "")) + "</div>"));
+          thread.appendChild(h('<div class="bubble in"><span class="who">Andra</span>Oh iya, makasih udah ngingetin 🙏 aku hapus ya</div>'));
+          ctrl.innerHTML = '<div class="fb ok" style="margin-top:14px"><b>Selesai!</b> Kamu sudah mempraktikkan tabayyun dan saling menasihati dalam kebenaran.</div>';
+        });
+      });
+      return el;
+    },
+
+    balas: function () {
+      var c = C.balas;
+      var el = h('<div class="act"><h3>Balas Pesan Rani</h3><div class="phone"><div class="ph-top">Rani</div><div class="bubble in">' + esc(c.pesan) + '</div><div class="thread"></div></div><div class="ctrl"></div></div>');
+      var ctrl = $(".ctrl", el), thread = $(".thread", el);
+      function render() {
+        ctrl.innerHTML = '<p style="font-weight:800;margin:16px 0 4px">Pilih balasanmu:</p>';
+        c.pilihan.forEach(function (o) {
+          var b = h('<button class="opt" type="button">' + esc(o.l) + "</button>");
+          b.onclick = function () {
+            $$(".opt", ctrl).forEach(function (x) { x.disabled = true; });
+            b.classList.add(o.ok ? "right" : "wrong");
+            ctrl.appendChild(h('<div class="fb ' + (o.ok ? "ok" : "no") + '">' + esc(o.w) + "</div>"));
+            if (o.ok) {
+              thread.innerHTML = '<div class="bubble out">' + esc(o.l.replace(/^“|”$/g, "")) + '</div><div class="bubble in">Makasih ya 🥹 aku taruh HP dulu. Besok kita saling ingetin.</div>';
+            } else {
+              var rb = h('<button class="btn btn-ghost" type="button" style="margin-top:12px">Coba lagi</button>'); rb.onclick = render; ctrl.appendChild(rb);
+            }
+          };
+          ctrl.appendChild(b);
+        });
+      }
+      render(); return el;
+    }
+  };
+
+  function reflBlock(key, prompt) {
+    var el = h('<div class="card"><p style="margin-top:0;font-weight:700">' + esc(prompt) + '</p><textarea aria-label="Jawaban refleksi" placeholder="Tulis dengan kata-katamu sendiri…"></textarea><div class="saved" aria-live="polite"></div><p class="small muted" style="margin:6px 0 0">🔒 Tersimpan hanya di perangkat ini dan tidak dikirim ke mana pun.</p></div>');
+    var ta = $("textarea", el), sv = $(".saved", el), t;
+    ta.value = S.refl[key] || "";
+    ta.addEventListener("input", function () { clearTimeout(t); t = setTimeout(function () { S.refl[key] = ta.value; save(S); sv.textContent = "✓ Tersimpan"; }, 400); });
+    return el;
+  }
+
+  /* ---------- halaman ---------- */
+  function sunSVG() {
+    return '<div class="horizon" aria-hidden="true"><svg class="sun" viewBox="0 0 200 200"><defs><radialGradient id="g" cx="50%" cy="45%" r="55%"><stop offset="0" stop-color="#fff0c2"/><stop offset="1" stop-color="#ff9f6e"/></radialGradient></defs><circle class="disc" cx="100" cy="104" r="84" fill="url(#g)"/></svg>' +
+      '<svg class="hill" viewBox="0 0 1000 60" preserveAspectRatio="none"><path d="M0 34 Q250 6 500 26 T1000 20 V60 H0Z" fill="#fff8f4"/></svg></div>';
+  }
+
+  function home() {
+    var doneN = Object.keys(S.done).length;
+    var nextPart = C.bagian.filter(function (b) { return !S.done[b.no]; })[0];
+    var qsum = Object.keys(S.quiz).filter(function (k) { return k.charAt(0) === "b"; }).reduce(function (t, k) { return t + S.quiz[k]; }, 0);
+    app.innerHTML =
+      '<section class="hero"><div class="cloud c1"></div><div class="cloud c2"></div><div class="wrap">' +
+      '<p class="ar-big" lang="ar">وَالْعَصْرِ</p>' +
+      "<h1>Demi Masa: <em>Kendalikan Jempol,</em><br>Jaga Waktumu</h1>" +
+      '<p class="lead">Belajar nilai QS. Al-‘Ashr untuk mengendalikan <i>doomscrolling</i>.</p>' +
+      '<div class="row"><a class="btn btn-main" href="#bagian-' + (nextPart ? nextPart.no : 1) + '">' + (doneN ? "Lanjutkan belajar →" : "Mulai belajar →") + '</a><a class="btn btn-soft" href="#petunjuk">Petunjuk</a></div>' +
+      "</div>" + sunSVG() + "</section>" +
+
+      (S.last ? '<section class="sec tight"><div class="wrap"><a class="resume" href="#bagian-' + S.last + '" data-tone="' + S.last + '"><span class="ic">' + C.bagian[S.last - 1].ikon + '</span><span><small>Terakhir kamu buka</small><b>Bagian ' + S.last + ": " + esc(C.bagian[S.last - 1].judul) + "</b></span><span class='go'>→</span></a></div></section>" : "") +
+
+      '<section class="sec"><div class="wrap"><div class="sec-head"><p class="kicker">Tujuan belajar</p><h2>Yang akan kamu kuasai</h2></div>' +
+      '<div class="goal-tiles">' + C.pilar.map(function (p, i) { return '<div class="gt" data-tone="' + p.no + '"><span class="gi">' + p.ikon + "</span><b>" + esc(p.nama) + "</b><small>" + esc(p.ringkas) + "</small></div>"; }).join("") + "</div>" +
+      '<details class="more"><summary>Lihat tujuan lengkap</summary><ol>' + C.tujuanUmum.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ol></details></div></section>" +
+
+      '<section class="sec band-soft"><div class="wrap"><div class="sec-head"><p class="kicker">Surah ke-103</p><h2>Tiga ayat, pedoman seumur hidup</h2></div>' +
+      dalilCard({ tipe: "ayat", arab: C.alAshr.arab, latin: C.alAshr.latin, arti: C.alAshr.arti, sumber: C.alAshr.sumber }) + "</div></section>" +
+
+      '<section class="sec"><div class="wrap"><div class="sec-head"><p class="kicker">Daftar materi</p><h2>Lima bagian, lima pilar</h2></div><div class="journey">' +
+      C.bagian.map(function (b) {
+        var qs = S.quiz["b" + b.no];
+        return '<a class="pcard" data-tone="' + b.no + '" href="#bagian-' + b.no + '"><div class="ic">' + b.ikon + '</div><div><span class="num">Bagian ' + b.no + " · Pertemuan " + b.pertemuan + "</span><h3>" + esc(b.judul) + '</h3><div class="badges">' + (S.done[b.no] ? '<span class="badge done">✓ Selesai</span>' : "") + (qs != null ? '<span class="badge">Kuis ' + qs + "/3</span>" : "") + "</div></div></a>";
+      }).join("") + "</div></div></section>" +
+
+      '<section class="sec band-soft"><div class="wrap"><div class="sec-head"><p class="kicker">Progresku</p><h2>Sejauh mana kamu belajar?</h2></div>' +
+      '<div class="scores"><div><b>' + doneN + '/5</b><span>bagian</span></div><div><b>' + qsum + '/15</b><span>kuis bagian</span></div><div><b>' + (S.quiz.akhir != null ? S.quiz.akhir : "–") + '/10</b><span>kuis akhir</span></div></div>' +
+      '<div class="row" style="margin-top:18px"><a class="btn btn-ghost" href="#progres">Lihat progres →</a></div></div></section>' +
+
+      '<section class="sec"><div class="wrap"><div class="sec-head"><p class="kicker">Jelajahi</p><h2>Fitur belajar</h2></div><div class="tiles">' +
+      [["#kuis-akhir", "🏁", "Kuis Akhir", "10 soal"], ["#rangkuman", "🗺️", "Rangkuman", "4 pilar"], ["#glosarium", "🔤", "Glosarium", C.glosarium.length + " istilah"], ["#unduhan", "⬇️", "Unduhan", "2 PDF"], ["#tanya", "💬", "Tanya Jawab", "& FAQ"], ["#materi", "📚", "Daftar Materi", "per topik"]].map(function (t) {
+        return '<a class="tile" href="' + t[0] + '"><span>' + t[1] + "</span><b>" + t[2] + "</b><small>" + t[3] + "</small></a>";
+      }).join("") + "</div></div></section>" +
+
+      '<section class="sec band-soft"><div class="wrap"><div class="sec-head"><p class="kicker">Baru ditambahkan</p><h2>Materi terbaru</h2></div><div class="news">' + C.terbaru.map(function (n) { return '<a href="' + n.link + '"><time>' + esc(tgl(n.tgl)) + "</time><b>" + esc(n.judul) + "</b></a>"; }).join("") + "</div></div></section>" +
+
+      '<section class="sec"><div class="wrap"><a class="dev-mini" href="#pengembang"><div class="avatar">KB</div><div><b>Kiromim Baroroh</b><span>Pengembang · STIT Muhammadiyah Bojonegoro</span></div><span class="go">→</span></a></div></section>';
+  }
+
+  function petunjuk() {
+    app.innerHTML = '<section class="phead"><div class="wrap"><p class="crumb"><a href="#beranda">Beranda</a> / Petunjuk</p><span class="pnum">🧭 Sebelum mulai</span><h1>Cara Belajar di Sini</h1><p class="sub">Lima bagian yang mengikuti pilar QS. Al-‘Ashr</p></div></section>' +
+      '<section class="sec"><div class="wrap">' +
+      '<div class="card mat"><h3>📚 Alur setiap bagian</h3><ul><li><b>Tujuan</b>: apa yang akan kamu pahami.</li><li><b>Pemantik</b>: pertanyaan untuk diingat-ingat.</li><li><b>Ayat & hadis</b>: teks Arab dan terjemahnya.</li><li><b>Penjelasan</b>: makna dan tafsir ringkas.</li><li><b>Video & cerita</b>: contoh dari kehidupan sehari-hari.</li><li><b>Aktivitas</b>: simulasi interaktif.</li><li><b>Refleksi</b>: jawaban pribadi yang hanya tersimpan di perangkatmu.</li><li><b>Kuis</b>: latihan dengan umpan balik langsung.</li></ul></div>' +
+      '<div class="card mat"><h3>👩‍🏫 Belajar bersama guru</h3><p>Website ini dipakai dalam pembelajaran PAI yang dipandu guru selama empat pertemuan. Ikuti arahan gurumu tentang bagian mana yang dikerjakan di setiap pertemuan.</p></div>' +
+      '<div class="card mat"><h3>💬 Tidak ada yang menghakimi</h3><p>Kamu tidak perlu menceritakan kebiasaanmu di depan kelas. Jawablah refleksi dengan jujur untuk dirimu sendiri.</p></div>' +
+      '<div class="card mat"><h3>🫶 Jika kamu merasa sangat cemas</h3><p>Jika berita buruk membuatmu sulit tidur atau sedih berkepanjangan, ceritakan kepada orang tua, wali kelas, atau guru BK. Meminta bantuan adalah langkah yang berani.</p></div>' +
+      '<div class="row" style="margin-top:22px"><a class="btn btn-main" href="#bagian-1">Mulai Bagian 1 →</a></div></div></section>';
+  }
+
+  var MAT_IK = { 1: ["🕰️", "🎨", "💼", "🙈", "📵"], 2: ["💡", "📜", "🛑", "🌙", "🌤️"], 3: ["🌱", "📲", "🍂", "⚖️"], 4: ["🔎", "📰", "🖐️", "🤝"], 5: ["💪", "👫", "🪜", "🫶"] };
+
+  function slider(slides) {
+    var el = h('<div class="slider"><div class="slides" tabindex="0" aria-label="Kartu penjelasan, geser ke samping"></div><div class="sl-nav"><button type="button" class="sl-btn" aria-label="Sebelumnya">‹</button><div class="dots"></div><button type="button" class="sl-btn" aria-label="Berikutnya">›</button></div></div>');
+    var track = $(".slides", el), dots = $(".dots", el);
+    slides.forEach(function (s, i) {
+      track.insertAdjacentHTML("beforeend", '<article class="slide"><div class="sl-top"><span class="sl-ic">' + s.ic + '</span><span class="sl-n">' + (i + 1) + " / " + slides.length + "</span></div><h3>" + s.h + "</h3>" + s.body + "</article>");
+      dots.insertAdjacentHTML("beforeend", '<i class="' + (i ? "" : "on") + '"></i>');
+    });
+    function idx() { var w = track.firstChild.getBoundingClientRect().width + 14; return Math.round(track.scrollLeft / w); }
+    function goTo(i) { var t = track.children[Math.max(0, Math.min(slides.length - 1, i))]; track.scrollTo({ left: t.offsetLeft - track.offsetLeft - 2, behavior: "smooth" }); }
+    track.addEventListener("scroll", function () { var k = idx(); $$("i", dots).forEach(function (d, j) { d.classList.toggle("on", j === k); }); });
+    var bt = $$(".sl-btn", el); bt[0].onclick = function () { goTo(idx() - 1); }; bt[1].onclick = function () { goTo(idx() + 1); };
+    track.addEventListener("keydown", function (e) { if (e.key === "ArrowRight") goTo(idx() + 1); if (e.key === "ArrowLeft") goTo(idx() - 1); });
+    return el;
+  }
+
+  function part(no) {
+    var b = C.bagian[no - 1]; if (!b) return notFound();
+    var pil = C.pilar[no - 1];
+    S.opened[no] = Date.now(); S.last = no; S.pos = S.pos || {}; save(S);
+    var steps = [["tujuan", "Mulai", "🎯"], ["dalil", "Ayat", "📖"], ["materi", "Penjelasan", "💬"], ["diagram", "Diagram", "📊"], ["video", "Video", "🎬"], ["cerita", "Contoh", "📱"], ["aktivitas", "Aktivitas", "🕹️"], ["refleksi", "Refleksi", "✍️"], ["rangkuman", "Rangkuman", "📌"], ["kuis", "Kuis", "✅"]];
+    app.innerHTML =
+      '<section class="phead slim"><div class="wrap"><p class="crumb"><a href="#beranda">Beranda</a> / Bagian ' + b.no + '</p><div class="ph-row"><div><span class="pnum">' + b.ikon + " Bagian " + b.no + "</span><h1>" + esc(b.judul) + '</h1><p class="sub">' + esc(b.sub) + '</p></div><p class="ar-pillar" lang="ar">' + pil.arab + "</p></div></div></section>" +
+      '<nav class="stepper" aria-label="Langkah belajar"><div class="wrap"><ol>' + steps.map(function (s, i) { return '<li><button type="button" data-i="' + i + '"><span class="sn">' + (i + 1) + "</span><span class=\"sl\">" + s[1] + "</span></button></li>"; }).join("") + '</ol></div><div class="sbar"><i></i></div></nav>' +
+      '<div class="wrap stage" id="partBody"></div>' +
+      '<div class="pager"><div class="wrap"><button type="button" class="btn btn-ghost pg-prev">←</button><span class="pg-info"></span><button type="button" class="btn btn-main pg-next">Lanjut →</button></div></div>';
+    var body = $("#partBody");
+    function blk(id, icon, title, inner) {
+      var s = h('<section class="block step" id="s-' + id + '"><h2><span class="dot">' + icon + "</span>" + title + "</h2></section>");
+      if (typeof inner === "string") s.insertAdjacentHTML("beforeend", inner); else s.appendChild(inner);
+      body.appendChild(s); return s;
+    }
+    blk("tujuan", "🎯", "Siap belajar?", '<div class="hero-step"><span class="big-ic">' + b.ikon + '</span><p class="lead-step">' + esc(b.tujuan) + '</p></div><div class="card ask"><span class="lbl">Coba ingat-ingat dulu…</span><p>' + esc(b.pemantik) + "</p></div>");
+    blk("dalil", "📖", "Ayat & Hadis", b.dalil.map(dalilCard).join(""));
+
+    var ms = blk("materi", "💬", "Penjelasan", "");
+    ms.appendChild(speakBtn(function () { return b.materi.map(function (m) { return m.h + ". " + plain(m.p || "") + " " + (m.list || []).join(". "); }).join(" "); }, "Dengarkan semua"));
+    var sl = b.materi.map(function (m, i) {
+      var pp = "";
+      if (m.p) {
+        var sn = m.p.split(/(?<=\.)\s+(?=[A-Z“])/);
+        pp = '<p class="inti">' + sn[0] + "</p>" + (sn.length > 1 ? '<details class="lanjut"><summary>Baca selengkapnya</summary><p>' + sn.slice(1).join(" ") + "</p></details>" : "");
+      }
+      return { ic: (MAT_IK[b.no] || [])[i] || "✨", h: esc(m.h), body: pp + (m.list ? '<ul class="checks">' + m.list.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : "") };
+    });
+    if (b.tafsir) b.tafsir.forEach(function (t) { sl.push({ ic: "📚", h: esc(t.m), body: '<p class="small muted" style="margin:0 0 6px"><i>' + esc(t.k) + "</i></p><p>" + esc(t.t) + "</p>" }); });
+    ms.appendChild(slider(sl));
+    ms.insertAdjacentHTML("beforeend", '<p class="hint">👉 Geser kartu ke samping atau tekan tombol panah.</p>');
+
+    blk("diagram", "📊", "Diagram", diagram(b.no));
+    var vs = blk("video", "🎬", "Video & Audio", videoBlock(b.no));
+    var aud = h('<div class="card audio-card"><div><b>🎧 Versi audio</b><p class="small muted" style="margin:2px 0 0">Contoh situasi + rangkuman</p></div></div>');
+    aud.appendChild(speakBtn(function () { return b.cerita.judul + ". " + b.cerita.teks.join(" ") + " Rangkuman. " + C.ringkasan[b.no].join(" "); }, "Putar"));
+    vs.appendChild(aud);
+    blk("cerita", "📱", "Contoh Situasi", '<div class="story"><div class="st-h">' + esc(b.cerita.judul) + '</div><div class="st-b">' + b.cerita.teks.map(function (t, i) { return '<p class="panel"><span>' + (i ? "⏱️" : "📍") + "</span>" + esc(t) + "</p>"; }).join("") + '<div class="st-q">🤔 ' + esc(b.cerita.tanya) + "</div></div></div>");
+    blk("aktivitas", "🕹️", "Aktivitas", ACT[b.aktivitas]());
+    blk("refleksi", "✍️", "Refleksi Pribadi", reflBlock("b" + b.no, b.refleksi));
+    blk("rangkuman", "📌", "Rangkuman", '<div class="summ-grid">' + C.ringkasan[b.no].map(function (x, i) { return '<div class="summ-c"><span>' + (i + 1) + "</span><p>" + esc(x) + "</p></div>"; }).join("") + "</div>");
+    var qwrap = h('<div><div class="quiz-head"><span class="qic">🧠</span><span>' + b.kuis.length + " soal · pilih jawaban, lalu baca penjelasannya</span></div></div>");
+    qwrap.appendChild(quizBlock(b.kuis, "b" + b.no));
+    blk("kuis", "✅", "Kuis Bagian " + b.no, qwrap);
+
+    var secs = $$(".step", body), btns = $$(".stepper button"), cur = 0;
+    var prev = $(".pg-prev"), next = $(".pg-next"), info = $(".pg-info"), bar = $(".stepper .sbar i");
+    function show(i, scroll) {
+      cur = Math.max(0, Math.min(secs.length - 1, i)); stopSpeak();
+      secs.forEach(function (s, j) { s.classList.toggle("on", j === cur); });
+      btns.forEach(function (x, j) { x.classList.toggle("on", j === cur); x.classList.toggle("past", j < cur); x.setAttribute("aria-current", j === cur ? "step" : "false"); });
+      var ab = btns[cur]; ab.parentNode.parentNode.scrollTo({ left: ab.parentNode.offsetLeft - 40, behavior: "smooth" });
+      bar.style.width = ((cur + 1) / secs.length * 100) + "%";
+      info.textContent = (cur + 1) + " / " + secs.length;
+      prev.disabled = false; prev.textContent = cur === 0 ? (no > 1 ? "← Bagian " + (no - 1) : "← Beranda") : "←";
+      next.textContent = cur === secs.length - 1 ? (S.done[no] ? "Bagian berikutnya →" : "Selesai ✓") : "Lanjut →";
+      S.pos[no] = cur; save(S);
+      if (scroll) { var top = $(".stepper").getBoundingClientRect().top + window.scrollY - 60; window.scrollTo({ top: Math.max(0, top), behavior: "smooth" }); }
+    }
+    btns.forEach(function (x) { x.onclick = function () { show(+x.dataset.i, true); }; });
+    prev.onclick = function () { if (cur === 0) { location.hash = no > 1 ? "#bagian-" + (no - 1) : "#beranda"; } else show(cur - 1, true); };
+    next.onclick = function () {
+      if (cur < secs.length - 1) return show(cur + 1, true);
+      S.done[no] = true; save(S); updChip(); location.hash = no < 5 ? "#bagian-" + (no + 1) : "#rangkuman";
+    };
+    show(S.pos[no] || 0, false);
+  }
+
+  function rangkuman() {
+    app.innerHTML = '<section class="phead"><div class="wrap"><p class="crumb"><a href="#beranda">Beranda</a> / Rangkuman</p><span class="pnum">🗺️ Pertemuan 4</span><h1>Empat Pilar, Satu Kendali</h1><p class="sub">Hubungan nilai Al-‘Ashr dengan pengendalian doomscrolling</p></div></section>' +
+      '<section class="sec"><div class="wrap"><div class="map">' + C.pilar.map(function (p) {
+        return '<div class="m" data-tone="' + p.no + '"><div class="ic">' + p.ikon + '</div><div><p class="ar-s" lang="ar">' + p.arab + "</p><h3>" + esc(p.nama) + "</h3><p>" + esc(p.ringkas) + "</p></div></div>";
+      }).join("") + '</div>' +
+      '<div class="card ask" style="margin-top:18px"><span class="lbl">Intinya</span><p>Waktu adalah modal. Iman menjadi rem dari dalam diri, amal saleh menjadi arah, tabayyun menjaga kebenaran, dan kesabaran yang saling dikuatkan membuat kita mampu berhenti.</p></div>' +
+      '<h2 style="margin-top:34px">Rencana Kecilku</h2><p class="muted">Pilih langkah yang ingin kamu coba minggu ini. Cukup dua atau tiga saja agar realistis.</p><div class="pledge" id="pledge"></div>' +
+      '<div id="pledgeMsg" class="card" style="display:none;margin-top:12px"></div>' +
+      '<h2 style="margin-top:34px">Refleksi Akhir</h2><div id="rf"></div>' +
+      '<div class="next"><a class="btn btn-ghost" href="#bagian-5">← Bagian 5</a><a class="btn btn-main" href="#kuis-akhir">Kuis Akhir →</a></div></div></section>';
+    var pl = $("#pledge"), msg = $("#pledgeMsg");
+    function showMsg() {
+      if (!S.plan.length) { msg.style.display = "none"; return; }
+      msg.style.display = "block";
+      msg.innerHTML = "<b>Komitmenku minggu ini:</b><ul style='margin:6px 0 0'>" + S.plan.map(function (i) { return "<li>" + esc(C.rencana[i]) + "</li>"; }).join("") + "</ul><p class='small muted' style='margin:8px 0 0'>Kamu bisa memotret layar ini sebagai pengingat.</p>";
+    }
+    C.rencana.forEach(function (r, i) {
+      var lb = h('<label><input type="checkbox"' + (S.plan.indexOf(i) > -1 ? " checked" : "") + "><span>" + esc(r) + "</span></label>");
+      $("input", lb).addEventListener("change", function (e) {
+        var k = S.plan.indexOf(i); if (e.target.checked && k < 0) S.plan.push(i); if (!e.target.checked && k > -1) S.plan.splice(k, 1);
+        save(S); showMsg();
+      });
+      pl.appendChild(lb);
+    });
+    showMsg();
+    $("#rf").appendChild(reflBlock("akhir", "Dengan bahasamu sendiri, jelaskan bagaimana keempat pilar Al-‘Ashr membantumu mengendalikan kebiasaan menggulir konten negatif."));
+  }
+
+  function kuisAkhir() {
+    var list = C.kuisAkhir, i = 0, score = 0;
+    app.innerHTML = '<section class="phead"><div class="wrap"><p class="crumb"><a href="#beranda">Beranda</a> / Kuis Akhir</p><span class="pnum">🏁 Latihan</span><h1>Kuis Akhir</h1><p class="sub">' + list.length + " soal tentang seluruh nilai Al-‘Ashr</p></div></section>" +
+      '<section class="sec"><div class="wrap"><div class="fq-bar"><i id="bar" style="width:0"></i></div><div id="fq"></div></div></section>';
+    var fq = $("#fq");
+    function show() {
+      $("#bar").style.width = (i / list.length * 100) + "%";
+      if (i >= list.length) {
+        var pct = Math.round(score / list.length * 100);
+        S.quiz.akhir = Math.max(S.quiz.akhir || 0, score); S.quizLast.akhir = score; save(S);
+        fq.innerHTML = '<div class="card result"><p class="muted" style="margin:0">Skormu</p><div class="big">' + score + "/" + list.length + '</div><p style="font-weight:700">' +
+          (pct >= 80 ? "Masyaallah, pemahamanmu sudah kuat! 🌟" : pct >= 60 ? "Bagus! Ulangi bagian yang masih ragu, ya." : "Tidak apa-apa. Baca ulang bagian-bagiannya, lalu coba lagi.") +
+          '</p><div class="row"><button class="btn btn-main" id="again" type="button">Ulangi kuis</button><a class="btn btn-ghost" href="#rangkuman">Kembali ke rangkuman</a></div></div>';
+        $("#again").onclick = function () { i = 0; score = 0; show(); };
+        return;
+      }
+      var it = list[i];
+      fq.innerHTML = '<p class="muted small" style="margin:0 0 6px">Soal ' + (i + 1) + " dari " + list.length + "</p>";
+      var q = h('<div class="q"><p class="qt">' + esc(it.q) + "</p></div>");
+      it.o.forEach(function (op, oi) {
+        var b = h('<button class="opt" type="button">' + String.fromCharCode(65 + oi) + ". " + esc(op) + "</button>");
+        b.onclick = function () {
+          $$(".opt", q).forEach(function (x, xi) { x.disabled = true; if (xi === it.a) x.classList.add("right"); });
+          var ok = oi === it.a; if (ok) score++; else b.classList.add("wrong");
+          q.appendChild(h('<div class="fb ' + (ok ? "ok" : "no") + '"><b>' + (ok ? "Tepat! " : "Belum tepat. ") + "</b>" + esc(it.w) + "</div>"));
+          var nb = h('<button class="btn btn-dark" type="button" style="margin-top:12px">' + (i < list.length - 1 ? "Soal berikutnya →" : "Lihat hasil") + "</button>");
+          nb.onclick = function () { i++; show(); window.scrollTo(0, 0); };
+          q.appendChild(nb); nb.focus();
+        };
+        q.appendChild(b);
+      });
+      fq.appendChild(q);
+    }
+    show();
+  }
+
+  var guruOK = false;
+  function guru() {
+    app.innerHTML = '<section class="phead"><div class="wrap"><p class="crumb"><a href="#beranda">Beranda</a> / Guru</p><span class="pnum">👩‍🏫 Untuk guru PAI</span><h1>Panduan Guru</h1><p class="sub">Skenario empat pertemuan dan catatan pelaksanaan</p></div></section><section class="sec"><div class="wrap" id="gw"></div></section>';
+    var gw = $("#gw");
+    if (!guruOK) {
+      gw.innerHTML = '<div class="card gate"><p style="margin-top:0">Masukkan kata sandi guru.</p><input type="password" id="pw" aria-label="Kata sandi"><button class="btn btn-dark" id="go" type="button">Masuk</button><p class="small muted" id="pwm"></p></div>';
+      function tryIn() { if ($("#pw").value === CFG.GURU_PASSWORD) { guruOK = true; guru(); } else { $("#pwm").textContent = "Kata sandi belum tepat."; } }
+      $("#go").onclick = tryIn; $("#pw").addEventListener("keydown", function (e) { if (e.key === "Enter") tryIn(); });
+      return;
+    }
+    var g = C.guru;
+    gw.innerHTML = '<div class="warn">Rancangan ini bersifat awal dan dapat disesuaikan dengan alur tujuan pembelajaran sekolah. Pretest dan posttest dikerjakan di kertas, terpisah dari website.</div>' +
+      g.pertemuan.map(function (p) {
+        return '<div class="card" style="margin-top:14px"><p class="kicker" style="margin:0">Pertemuan ' + p.no + ' · ±2 JP</p><h3 style="margin:4px 0 6px;font-family:var(--serif)">' + esc(p.fokus) + "</h3><p><b>Tujuan:</b> " + esc(p.tujuan) + "</p><p style='margin-bottom:4px'><b>Kegiatan:</b></p><ol style='margin-top:0'>" + p.kegiatan.map(function (k) { return "<li>" + esc(k) + "</li>"; }).join("") + "</ol><p style='margin:0'><b>Halaman:</b> " + p.bagian.map(function (n) { return '<a href="#bagian-' + n + '">Bagian ' + n + "</a>"; }).join(", ") + (p.no === 4 ? ', <a href="#rangkuman">Rangkuman</a>, <a href="#kuis-akhir">Kuis Akhir</a>' : "") + "</p></div>";
+      }).join("") +
+      '<h2 style="margin-top:30px">Catatan pelaksanaan</h2><div class="card mat"><ul style="margin:0">' + g.catatan.map(function (c) { return "<li>" + esc(c) + "</li>"; }).join("") + "</ul></div>" +
+      '<h2 style="margin-top:30px">Kunci kuis per bagian</h2><div class="card" style="overflow-x:auto"><table><tr><th>Bagian</th><th>Kunci</th></tr>' +
+      C.bagian.map(function (b) { return "<tr><td>" + b.no + ". " + esc(b.judul) + "</td><td>" + b.kuis.map(function (q, i) { return (i + 1) + "-" + String.fromCharCode(65 + q.a); }).join(", ") + "</td></tr>"; }).join("") +
+      "<tr><td>Kuis akhir</td><td>" + C.kuisAkhir.map(function (q, i) { return (i + 1) + "-" + String.fromCharCode(65 + q.a); }).join(", ") + "</td></tr></table></div>" +
+      '<div class="row" style="margin-top:22px"><button class="btn btn-ghost" id="reset" type="button">Hapus progres di perangkat ini</button></div>';
+    var rs = $("#reset"), armed = false;
+    rs.onclick = function () {
+      if (!armed) { armed = true; rs.textContent = "Yakin? Klik sekali lagi untuk menghapus"; return; }
+      S = { done: {}, refl: {}, quiz: {}, plan: [] }; save(S); updChip(); location.hash = "#beranda";
+    };
+  }
+
+  function pengembang() {
+    var D = C.pengembang;
+    app.innerHTML = '<section class="phead"><div class="wrap"><p class="crumb"><a href="#beranda">Beranda</a> / Profil Pengembang</p><span class="pnum">👤 Tentang pengembang</span><h1>Profil Pengembang</h1><p class="sub">Orang di balik media pembelajaran ini</p></div></section>' +
+      '<section class="sec"><div class="wrap"><div class="card"><div class="dev"><div class="avatar">KB</div><div><span class="role">' + esc(D.peran) + "</span><h2>" + esc(D.nama) + '</h2><p class="muted" style="margin:0">' + esc(D.kampus) + "</p><p>" + esc(D.bio) + "</p></div></div>" +
+      '<div class="facts">' + D.fakta.map(function (f) { return '<div><span class="fi">' + f[0] + "</span><span><small>" + esc(f[1]) + "</small>" + esc(f[2]) + "</span></div>"; }).join("") + "</div></div>" +
+      '<div class="card" style="margin-top:14px"><h3 style="margin-top:0;font-family:var(--serif)">Ucapan terima kasih</h3><p style="margin:0">' + esc(D.terimakasih) + "</p></div>" +
+      '<div class="row" style="margin-top:22px"><a class="btn btn-main" href="#beranda">← Kembali ke beranda</a></div></div></section>';
+  }
+
+
+  function tgl(s) { var b = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"], p = s.split("-"); return +p[2] + " " + b[+p[1] - 1] + " " + p[0]; }
+  function head(crumb, pill, title, sub) {
+    return '<section class="phead"><div class="wrap"><p class="crumb"><a href="#beranda">Beranda</a> / ' + esc(crumb) + '</p><span class="pnum">' + pill + "</span><h1>" + esc(title) + '</h1><p class="sub">' + esc(sub) + "</p></div></section>";
+  }
+
+  function materi() {
+    var groups = {};
+    C.bagian.forEach(function (b) { (groups[b.pertemuan] = groups[b.pertemuan] || []).push(b); });
+    app.innerHTML = head("Daftar Materi", "📚 Daftar materi", "Daftar Materi", C.mapel.nama + " · " + C.mapel.kelas) +
+      '<section class="sec"><div class="wrap"><div class="card meta"><div><small>Mata pelajaran</small><b>' + esc(C.mapel.nama) + '</b></div><div><small>Kelas</small><b>' + esc(C.mapel.kelas) + '</b></div><div><small>Elemen</small><b>' + esc(C.mapel.elemen) + '</b></div><div><small>Topik</small><b>QS. Al-‘Ashr & pengendalian doomscrolling</b></div></div>' +
+      '<div class="filter" role="group" aria-label="Kelompokkan"><button type="button" class="on" data-g="pertemuan">Per pertemuan</button><button type="button" data-g="topik">Per pilar/topik</button></div><div id="mlist"></div></div></section>';
+    function item(b) {
+      return '<a class="mitem" data-tone="' + b.no + '" href="#bagian-' + b.no + '"><span class="ic">' + b.ikon + "</span><span><b>Bagian " + b.no + ": " + esc(b.judul) + "</b><small>" + esc(b.sub) + "</small></span>" +
+        (S.done[b.no] ? '<span class="badge done">✓</span>' : S.opened[b.no] ? '<span class="badge">Dibuka</span>' : '<span class="badge">Baru</span>') + "</a>";
+    }
+    function render(g) {
+      var out = "";
+      if (g === "pertemuan") {
+        Object.keys(groups).forEach(function (k) { out += '<h3 class="grp">Pertemuan ' + k + "</h3>" + groups[k].map(item).join(""); });
+        out += '<h3 class="grp">Pertemuan 4 (lanjutan)</h3><a class="mitem" href="#rangkuman"><span class="ic">🗺️</span><span><b>Rangkuman empat pilar</b><small>Peta nilai Al-‘Ashr dan Rencana Kecilku</small></span></a><a class="mitem" href="#kuis-akhir"><span class="ic">🏁</span><span><b>Kuis akhir</b><small>10 soal dengan pembahasan</small></span></a>';
+      } else {
+        out += '<h3 class="grp">Elemen Al-Qur’an Hadis</h3>' + [1, 2].map(function (n) { return item(C.bagian[n - 1]); }).join("");
+        out += '<h3 class="grp">Elemen Akhlak (bermedia)</h3>' + [3, 4, 5].map(function (n) { return item(C.bagian[n - 1]); }).join("");
+        out += '<h3 class="grp">Penunjang</h3><a class="mitem" href="#glosarium"><span class="ic">🔤</span><span><b>Glosarium</b><small>Istilah penting</small></span></a><a class="mitem" href="#unduhan"><span class="ic">⬇️</span><span><b>Unduhan</b><small>Ringkasan PDF dan lembar kerja</small></span></a>';
+      }
+      $("#mlist").innerHTML = out;
+    }
+    $$(".filter button").forEach(function (bt) { bt.onclick = function () { $$(".filter button").forEach(function (x) { x.classList.remove("on"); }); bt.classList.add("on"); render(bt.dataset.g); }; });
+    render("pertemuan");
+  }
+
+  function progres() {
+    var opened = Object.keys(S.opened).length, done = Object.keys(S.done).length;
+    var ulang = C.bagian.filter(function (b) { return S.quizLast["b" + b.no] != null && S.quizLast["b" + b.no] < 2; });
+    var belum = C.bagian.filter(function (b) { return S.opened[b.no] && S.quizLast["b" + b.no] == null; });
+    var pct = Math.round((done / 5) * 100);
+    app.innerHTML = head("Progres", "📈 Progres belajar", "Progres Belajarku", "Tersimpan di perangkat ini saja") +
+      '<section class="sec"><div class="wrap"><div class="card prog-top"><div class="ring" style="--p:' + pct + '"><span>' + pct + '%</span></div><div><b>' + done + " dari 5 bagian selesai</b><p class='muted small' style='margin:2px 0 0'>" + opened + " bagian sudah dibuka · kuis akhir: " + (S.quizLast.akhir != null ? S.quizLast.akhir + "/10" : "belum") + "</p></div></div>" +
+      '<h2 style="margin-top:28px">Rincian per bagian</h2><div class="ptable">' + C.bagian.map(function (b) {
+        return '<div class="prow" data-tone="' + b.no + '"><span class="ic">' + b.ikon + '</span><span class="pt"><b>' + b.no + ". " + esc(b.judul) + "</b><small>" + (S.opened[b.no] ? "Dibuka " + new Date(S.opened[b.no]).toLocaleDateString("id-ID") : "Belum dibuka") + (S.done[b.no] ? " · selesai" : "") + "</small></span>" + lastScoreLabel("b" + b.no, 3) + "</div>";
+      }).join("") + '<div class="prow"><span class="ic">🏁</span><span class="pt"><b>Kuis akhir</b><small>10 soal</small></span>' + lastScoreLabel("akhir", 10) + "</div></div>" +
+      '<h2 style="margin-top:28px">Topik yang perlu diulang</h2>' +
+      (ulang.length || belum.length || (S.quizLast.akhir != null && S.quizLast.akhir < 7) ?
+        '<div class="card"><ul class="todo">' + ulang.map(function (b) { return '<li>🔁 <a href="#bagian-' + b.no + '">' + esc(b.judul) + "</a>: skor kuis terakhir " + S.quizLast["b" + b.no] + "/3. Baca lagi bagian Penjelasan dan Rangkuman.</li>"; }).join("") +
+        belum.map(function (b) { return '<li>✏️ <a href="#bagian-' + b.no + '">' + esc(b.judul) + "</a>: kuisnya belum dikerjakan.</li>"; }).join("") +
+        (S.quizLast.akhir != null && S.quizLast.akhir < 7 ? '<li>🏁 <a href="#kuis-akhir">Kuis akhir</a>: skor ' + S.quizLast.akhir + "/10, coba lagi setelah membaca rangkuman.</li>" : "") + "</ul></div>"
+        : '<div class="card"><p style="margin:0">' + (opened ? "🌟 Belum ada topik yang perlu diulang. Pertahankan!" : "Mulai dari Bagian 1, lalu kerjakan kuisnya. Rekomendasi akan muncul di sini.") + "</p></div>") +
+      '<div class="row" style="margin-top:22px"><a class="btn btn-main" href="#bagian-' + (C.bagian.filter(function (b) { return !S.done[b.no]; })[0] || { no: 1 }).no + '">Lanjut belajar →</a></div></div></section>';
+  }
+
+  function glosarium() {
+    app.innerHTML = head("Glosarium", "🔤 Istilah penting", "Glosarium", C.glosarium.length + " istilah yang dipakai dalam materi") +
+      '<section class="sec"><div class="wrap"><input class="search" id="gq" type="search" placeholder="Cari istilah, misalnya tabayyun…" aria-label="Cari istilah"><dl class="gloss" id="gl"></dl><p class="muted" id="gn" hidden>Istilah tidak ditemukan.</p></div></section>';
+    function render(q) {
+      q = (q || "").toLowerCase();
+      var list = C.glosarium.slice().sort(function (x, y) { return x[0].localeCompare(y[0], "id"); }).filter(function (g) { return !q || (g[0] + " " + g[1]).toLowerCase().indexOf(q) > -1; });
+      $("#gl").innerHTML = list.map(function (g) { return "<div><dt>" + esc(g[0]) + "</dt><dd>" + esc(g[1]) + "</dd></div>"; }).join("");
+      $("#gn").hidden = list.length > 0;
+    }
+    $("#gq").addEventListener("input", function (e) { render(e.target.value); }); render("");
+  }
+
+  function unduhan() {
+    app.innerHTML = head("Unduhan", "⬇️ Unduhan", "Unduhan", "Berkas PDF untuk dibaca atau dicetak") +
+      '<section class="sec"><div class="wrap"><div class="dl">' + C.unduhan.map(function (u) {
+        return '<a class="card dlc" href="' + u.file + '" download><span class="ic">' + u.ikon + '</span><span><b>' + esc(u.judul) + '</b><small>' + esc(u.ket) + '</small></span><span class="btn btn-main">PDF ↓</span></a>';
+      }).join("") + '</div><p class="small muted">Berkas juga bisa dibuka langsung di browser lalu dicetak.</p></div></section>';
+  }
+
+  function tanya() {
+    var T = CFG.TANYA || {};
+    var form = "";
+    if (T.googleForm) {
+      var src = T.googleForm + (T.googleForm.indexOf("?") > -1 ? "&" : "?") + "embedded=true";
+      form = '<div class="card"><h3 style="margin-top:0">Kirim pertanyaan</h3><iframe class="gform" src="' + esc(src) + '" title="Formulir pertanyaan" loading="lazy"></iframe></div>';
+    } else if (T.whatsapp) {
+      form = '<div class="card"><h3 style="margin-top:0">Kirim pertanyaan ke ' + esc(T.namaGuru || "guru") + '</h3><label class="lbl" for="tq">Pertanyaanmu</label><textarea id="tq" placeholder="Tulis pertanyaan tentang materi…"></textarea><label class="lbl" for="tb">Bagian yang ditanyakan</label><select id="tb"><option>Umum</option>' + C.bagian.map(function (b) { return "<option>Bagian " + b.no + ": " + esc(b.judul) + "</option>"; }).join("") + '</select><div class="row" style="justify-content:flex-start;margin-top:12px"><button class="btn btn-main" id="tsend" type="button">Kirim lewat WhatsApp</button></div><p class="small muted">Pesan dikirim lewat aplikasi WhatsApp milikmu ke nomor guru. Website tidak menyimpan pertanyaan.</p></div>';
+    } else {
+      form = '<div class="card warn-soft"><b>Formulir pertanyaan belum diaktifkan.</b><p class="small" style="margin:4px 0 0">Guru dapat mengaktifkannya dengan mengisi tautan Google Form atau nomor WhatsApp di <code>js/config.js</code>. Sementara itu, tuliskan pertanyaanmu di bawah dan sampaikan kepada guru PAI di kelas.</p><textarea id="tq" style="margin-top:10px" placeholder="Catat pertanyaanmu di sini (tersimpan di perangkatmu)…"></textarea></div>';
+    }
+    app.innerHTML = head("Tanya Jawab", "💬 Tanya jawab", "Tanya Jawab", "Bertanya dan berdiskusi bersama guru") +
+      '<section class="sec"><div class="wrap">' + form +
+      (T.grupDiskusi ? '<a class="card dlc" href="' + esc(T.grupDiskusi) + '" target="_blank" rel="noopener"><span class="ic">👥</span><span><b>Gabung ruang diskusi kelas</b><small>Diskusi bersama teman dan guru</small></span><span class="btn btn-dark">Buka</span></a>' : "") +
+      '<h2 style="margin-top:28px">Pertanyaan diskusi</h2><div class="card"><ol style="margin:0">' + C.bagian.map(function (b) { return "<li>" + esc(b.cerita.tanya) + ' <a class="small" href="#bagian-' + b.no + '">(Bagian ' + b.no + ")</a></li>"; }).join("") + "</ol></div>" +
+      '<h2 style="margin-top:28px">Pertanyaan yang sering diajukan</h2><div class="faq">' + C.faq.map(function (f) { return "<details><summary>" + esc(f[0]) + "</summary><p>" + esc(f[1]) + "</p></details>"; }).join("") + "</div></div></section>";
+    var ta = $("#tq");
+    if (ta) { ta.value = S.tanya || ""; ta.addEventListener("input", function () { S.tanya = ta.value; save(S); }); }
+    var sb = $("#tsend");
+    if (sb) sb.onclick = function () {
+      var q = ta.value.trim(); if (!q) { ta.focus(); return; }
+      var msg = "Assalamu’alaikum, " + (T.namaGuru || "Bu/Pak Guru") + ". Saya ingin bertanya tentang " + $("#tb").value + " (website Demi Masa):\n\n" + q;
+      window.location.href = "https://wa.me/" + encodeURIComponent(T.whatsapp) + "?text=" + encodeURIComponent(msg);
+    };
+  }
+
+  function notFound() { app.innerHTML = '<section class="sec"><div class="wrap"><h2>Halaman tidak ditemukan</h2><a class="btn btn-dark" href="#beranda">Kembali ke beranda</a></div></section>'; }
+
+  /* ---------- router ---------- */
+  function route() {
+    var p = (location.hash || "#beranda").slice(1) || "beranda";
+    stopSpeak(); drawer.hidden = true; document.body.classList.toggle("has-pager", /^bagian-/.test(p)); menuBtn.setAttribute("aria-expanded", "false");
+    $$(".drawer a").forEach(function (a) { a.classList.toggle("on", a.getAttribute("href") === "#" + p); });
+    var m = p.match(/^bagian-(\d)$/);
+    app.removeAttribute("data-tone"); if (m) app.setAttribute("data-tone", m[1]);
+    if (p === "beranda") home();
+    else if (p === "petunjuk") petunjuk();
+    else if (m) part(+m[1]);
+    else if (p === "rangkuman") rangkuman();
+    else if (p === "kuis-akhir") kuisAkhir();
+    else if (p === "guru") guru();
+    else if (p === "pengembang") pengembang();
+    else if (p === "materi") materi();
+    else if (p === "progres") progres();
+    else if (p === "glosarium") glosarium();
+    else if (p === "unduhan") unduhan();
+    else if (p === "tanya") tanya();
+    else notFound();
+    window.scrollTo(0, 0); updChip();
+    var t = $("h1", app); document.title = (t ? t.textContent + " · " : "") + "Demi Masa";
+  }
+  window.addEventListener("hashchange", route);
+  route();
+})();
+
+</script>
 </body>
 </html>
